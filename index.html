@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Lexmatheia">
+    <meta name="theme-color" content="#f7f5f0">
+    <meta name="description" content="Учи греческие слова для экзамена Ελληνομάθεια A2/B1">
+    <title>Lexmatheia — Греческая лексика A2/B1</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkxleG1hdGhlaWEiLAogICJzaG9ydF9uYW1lIjogIssmzrXOvs65zrzOsc64zrXOr86xIiwKICAiZGVzY3JpcHRpb24iOiAi0KPRh9C4INCz0YDQtdGH0LXRgdC60LjQtSDRgdC70L7QstCwINC00LvRjyDRjdC60LfQsNC80LXQvdCwIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmN2Y1ZjAiLAogICJ0aGVtZV9jb2xvciI6ICIjMWEzYTVjIiwKICAiaWNvbnMiOiBbXQp9">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body, #root {
+            width: 100%;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #f7f5f0;
+            color: #1a1a1a;
+        }
+        
+        button {
+            font-family: inherit;
+            -webkit-appearance: none;
+        }
+        
+        input {
+            font-family: inherit;
+            -webkit-appearance: none;
+        }
+
+        /* Safe area padding for notched phones */
+        @supports (padding-top: env(safe-area-inset-top)) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Prevent pull-to-refresh on mobile */
+        body {
+            overscroll-behavior-y: contain;
+        }
+
+        /* Selection color */
+        ::selection {
+            background: rgba(26, 58, 92, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useCallback, useRef } = React;
+        
+        
+// ============================================================
+// ΛΕΞΙΜΑΘΕΙΑ v3 — Production-grade Greek Vocabulary PWA
+// Premium Mediterranean design with refined interactions
+// ============================================================
+
+const TOPIC_RU = {
+  "Οικογένεια & Σχέσεις": "Семья и отношения",
+  "Σπίτι & Κατοικία": "Дом и жильё",
+  "Φαγητό & Ποτά": "Еда и напитки",
+  "Αγορές & Χρήματα": "Покупки и деньги",
+  "Δουλειά & Εργασία": "Работа",
+  "Υγεία & Σώμα": "Здоровье",
+  "Μεταφορές & Μετακίνηση": "Транспорт",
+  "Καιρός & Φύση": "Погода и природа",
+  "Εκπαίδευση & Σπουδές": "Образование",
+  "Πολιτογράφηση & Έγγραφα": "Гражданство и документы",
+  "Τεχνολογία & Ψηφιακός Κόσμος": "Технологии",
+  "Κοινωνία & Πολιτισμός Κύπρου": "Культура Кипра",
+  "Συναισθήματα & Χαρακτήρας": "Эмоции и характер",
+  "Υπηρεσίες & Καθημερινότητα": "Услуги и быт",
+};
+
+const TOPIC_ICONS = {
+  "Οικογένεια & Σχέσεις": "👨‍👩‍👧‍👦",
+  "Σπίτι & Κατοικία": "🏠",
+  "Φαγητό & Ποτά": "🍽",
+  "Αγορές & Χρήματα": "🛒",
+  "Δουλειά & Εργασία": "💼",
+  "Υγεία & Σώμα": "🏥",
+  "Μεταφορές & Μετακίνηση": "🚗",
+  "Καιρός & Φύση": "☀️",
+  "Εκπαίδευση & Σπουδές": "🎓",
+  "Πολιτογράφηση & Έγγραφα": "📋",
+  "Τεχνολογία & Ψηφιακός Κόσμος": "💻",
+  "Κοινωνία & Πολιτισμός Κύπρου": "🏛",
+  "Συναισθήματα & Χαρακτήρας": "💭",
+  "Υπηρεσίες & Καθημερινότητα": "🏦",
+};
+
+const WORD_DATABASE = {
+  "A2": {
+    "Οικογένεια & Σχέσεις": [
+      { gr: "οικογένεια", ru: "семья", en: "family", example: "Η οικογένειά μου μένει στη Λευκωσία." },
+      { gr: "γονείς", ru: "родители", en: "parents", example: "Οι γονείς μου είναι από τη Ρωσία." },
+      { gr: "παιδί", ru: "ребёнок", en: "child", example: "Το παιδί παίζει στο πάρκο." },
+      { gr: "αδερφός", ru: "брат", en: "brother", example: "Ο αδερφός μου σπουδάζει." },
+      { gr: "αδερφή", ru: "сестра", en: "sister", example: "Η αδερφή μου δουλεύει σε τράπεζα." },
+      { gr: "σύζυγος", ru: "супруг(а)", en: "spouse", example: "Ο σύζυγός μου είναι προγραμματιστής." },
+      { gr: "φίλος", ru: "друг", en: "friend", example: "Ο φίλος μου μένει κοντά." },
+      { gr: "γείτονας", ru: "сосед", en: "neighbor", example: "Ο γείτονας είναι πολύ ευγενικός." },
+      { gr: "παππούς", ru: "дедушка", en: "grandfather", example: "Ο παππούς μου ζει στο χωριό." },
+      { gr: "γιαγιά", ru: "бабушка", en: "grandmother", example: "Η γιαγιά μαγειρεύει ωραία." },
+      { gr: "θείος", ru: "дядя", en: "uncle", example: "Ο θείος μου έχει ταβέρνα." },
+      { gr: "θεία", ru: "тётя", en: "aunt", example: "Η θεία μου μένει στη Λεμεσό." },
+      { gr: "ξάδερφος", ru: "двоюродный брат", en: "cousin (m)", example: "Ο ξάδερφός μου παντρεύτηκε πέρυσι." },
+      { gr: "ανιψιός", ru: "племянник", en: "nephew", example: "Ο ανιψιός μου πάει σχολείο." },
+      { gr: "κόρη", ru: "дочь", en: "daughter", example: "Η κόρη μου μαθαίνει ελληνικά." },
+      { gr: "γιος", ru: "сын", en: "son", example: "Ο γιος μου είναι πέντε χρονών." },
+    ],
+    "Σπίτι & Κατοικία": [
+      { gr: "σπίτι", ru: "дом", en: "house", example: "Το σπίτι μου είναι μεγάλο." },
+      { gr: "διαμέρισμα", ru: "квартира", en: "apartment", example: "Νοικιάζω ένα διαμέρισμα." },
+      { gr: "κουζίνα", ru: "кухня", en: "kitchen", example: "Η κουζίνα είναι καθαρή." },
+      { gr: "μπάνιο", ru: "ванная", en: "bathroom", example: "Το μπάνιο είναι μικρό." },
+      { gr: "κρεβατοκάμαρα", ru: "спальня", en: "bedroom", example: "Η κρεβατοκάμαρα έχει μπαλκόνι." },
+      { gr: "σαλόνι", ru: "гостиная", en: "living room", example: "Καθόμαστε στο σαλόνι." },
+      { gr: "μπαλκόνι", ru: "балкон", en: "balcony", example: "Πίνω καφέ στο μπαλκόνι." },
+      { gr: "ενοίκιο", ru: "аренда", en: "rent", example: "Το ενοίκιο είναι 800 ευρώ." },
+      { gr: "έπιπλα", ru: "мебель", en: "furniture", example: "Αγοράσαμε καινούργια έπιπλα." },
+      { gr: "κλειδί", ru: "ключ", en: "key", example: "Πού είναι το κλειδί;" },
+      { gr: "πάτωμα", ru: "пол", en: "floor", example: "Το πάτωμα είναι ξύλινο." },
+      { gr: "τοίχος", ru: "стена", en: "wall", example: "Βάφουμε τον τοίχο." },
+      { gr: "παράθυρο", ru: "окно", en: "window", example: "Κλείσε το παράθυρο." },
+      { gr: "πόρτα", ru: "дверь", en: "door", example: "Η πόρτα είναι ανοιχτή." },
+      { gr: "σκάλες", ru: "лестница", en: "stairs", example: "Ανεβαίνω τις σκάλες." },
+    ],
+    "Φαγητό & Ποτά": [
+      { gr: "φαγητό", ru: "еда", en: "food", example: "Το φαγητό είναι νόστιμο." },
+      { gr: "ψωμί", ru: "хлеб", en: "bread", example: "Αγοράζω ψωμί κάθε μέρα." },
+      { gr: "νερό", ru: "вода", en: "water", example: "Θέλω ένα ποτήρι νερό." },
+      { gr: "καφές", ru: "кофе", en: "coffee", example: "Πίνω καφέ το πρωί." },
+      { gr: "κρέας", ru: "мясо", en: "meat", example: "Δεν τρώω κρέας." },
+      { gr: "ψάρι", ru: "рыба", en: "fish", example: "Τρώμε ψάρι την Παρασκευή." },
+      { gr: "λαχανικά", ru: "овощи", en: "vegetables", example: "Τα λαχανικά είναι φρέσκα." },
+      { gr: "φρούτα", ru: "фрукты", en: "fruits", example: "Αγοράζω φρούτα από τη λαϊκή." },
+      { gr: "τυρί", ru: "сыр", en: "cheese", example: "Η Κύπρος φτιάχνει χαλούμι." },
+      { gr: "ελιές", ru: "оливки", en: "olives", example: "Μου αρέσουν οι ελιές." },
+      { gr: "λάδι", ru: "масло", en: "oil", example: "Το ελαιόλαδο είναι υγιεινό." },
+      { gr: "ζάχαρη", ru: "сахар", en: "sugar", example: "Χωρίς ζάχαρη, παρακαλώ." },
+      { gr: "αλάτι", ru: "соль", en: "salt", example: "Βάλε λίγο αλάτι." },
+      { gr: "γάλα", ru: "молоко", en: "milk", example: "Πίνω γάλα κάθε πρωί." },
+      { gr: "μπύρα", ru: "пиво", en: "beer", example: "Μια μπύρα, παρακαλώ." },
+      { gr: "κρασί", ru: "вино", en: "wine", example: "Η Κύπρος έχει καλό κρασί." },
+    ],
+    "Αγορές & Χρήματα": [
+      { gr: "αγορά", ru: "покупка/рынок", en: "market", example: "Η λαϊκή αγορά είναι φθηνή." },
+      { gr: "κατάστημα", ru: "магазин", en: "store", example: "Το κατάστημα κλείνει στις 6." },
+      { gr: "σούπερ μάρκετ", ru: "супермаркет", en: "supermarket", example: "Πάω στο σούπερ μάρκετ." },
+      { gr: "τιμή", ru: "цена", en: "price", example: "Η τιμή είναι ψηλή." },
+      { gr: "λεφτά", ru: "деньги", en: "money", example: "Δεν έχω αρκετά λεφτά." },
+      { gr: "πιστωτική κάρτα", ru: "кредитная карта", en: "credit card", example: "Πληρώνω με κάρτα." },
+      { gr: "απόδειξη", ru: "чек", en: "receipt", example: "Θέλω την απόδειξη." },
+      { gr: "έκπτωση", ru: "скидка", en: "discount", example: "Υπάρχει έκπτωση σήμερα." },
+      { gr: "ακριβός", ru: "дорогой", en: "expensive", example: "Αυτό είναι πολύ ακριβό." },
+      { gr: "φθηνός", ru: "дешёвый", en: "cheap", example: "Θέλω κάτι πιο φθηνό." },
+      { gr: "μετρητά", ru: "наличные", en: "cash", example: "Πληρώνω μετρητοίς." },
+      { gr: "λογαριασμός", ru: "счёт", en: "bill", example: "Τον λογαριασμό, παρακαλώ." },
+    ],
+    "Δουλειά & Εργασία": [
+      { gr: "δουλειά", ru: "работа", en: "work", example: "Η δουλειά μου είναι ενδιαφέρουσα." },
+      { gr: "γραφείο", ru: "офис", en: "office", example: "Δουλεύω σε γραφείο." },
+      { gr: "μισθός", ru: "зарплата", en: "salary", example: "Ο μισθός είναι καλός." },
+      { gr: "συνέντευξη", ru: "собеседование", en: "interview", example: "Έχω συνέντευξη αύριο." },
+      { gr: "αφεντικό", ru: "начальник", en: "boss", example: "Το αφεντικό μου είναι αυστηρό." },
+      { gr: "συνάδελφος", ru: "коллега", en: "colleague", example: "Ο συνάδελφός μου είναι Κύπριος." },
+      { gr: "εταιρεία", ru: "компания", en: "company", example: "Η εταιρεία μου είναι μεγάλη." },
+      { gr: "σύμβαση", ru: "контракт", en: "contract", example: "Υπέγραψα τη σύμβαση." },
+      { gr: "άδεια", ru: "отпуск", en: "leave", example: "Θέλω άδεια για μια βδομάδα." },
+      { gr: "υπάλληλος", ru: "служащий", en: "employee", example: "Είμαι υπάλληλος σε IT εταιρεία." },
+      { gr: "βιογραφικό", ru: "резюме", en: "CV", example: "Στείλε μου το βιογραφικό σου." },
+      { gr: "πρόσληψη", ru: "наём", en: "hiring", example: "Η πρόσληψη ήταν γρήγορη." },
+    ],
+    "Υγεία & Σώμα": [
+      { gr: "γιατρός", ru: "врач", en: "doctor", example: "Πηγαίνω στον γιατρό." },
+      { gr: "φαρμακείο", ru: "аптека", en: "pharmacy", example: "Το φαρμακείο είναι κοντά." },
+      { gr: "νοσοκομείο", ru: "больница", en: "hospital", example: "Το νοσοκομείο είναι μεγάλο." },
+      { gr: "πονοκέφαλος", ru: "головная боль", en: "headache", example: "Έχω πονοκέφαλο." },
+      { gr: "πυρετός", ru: "температура", en: "fever", example: "Έχω ψηλό πυρετό." },
+      { gr: "φάρμακο", ru: "лекарство", en: "medicine", example: "Παίρνω φάρμακο κάθε μέρα." },
+      { gr: "ραντεβού", ru: "приём", en: "appointment", example: "Έκλεισα ραντεβού με γιατρό." },
+      { gr: "αρρώστια", ru: "болезнь", en: "illness", example: "Η αρρώστια δεν ήταν σοβαρή." },
+      { gr: "κρυολόγημα", ru: "простуда", en: "cold", example: "Έπιασα κρυολόγημα." },
+      { gr: "ασφάλεια", ru: "страховка", en: "insurance", example: "Έχω ιδιωτική ασφάλεια." },
+      { gr: "ασθενής", ru: "пациент", en: "patient", example: "Ο ασθενής περιμένει." },
+      { gr: "συνταγή", ru: "рецепт", en: "prescription", example: "Ο γιατρός έγραψε συνταγή." },
+    ],
+    "Μεταφορές & Μετακίνηση": [
+      { gr: "αυτοκίνητο", ru: "машина", en: "car", example: "Οδηγώ αυτοκίνητο." },
+      { gr: "λεωφορείο", ru: "автобус", en: "bus", example: "Το λεωφορείο αργεί." },
+      { gr: "αεροπλάνο", ru: "самолёт", en: "airplane", example: "Ταξιδεύω με αεροπλάνο." },
+      { gr: "στάση", ru: "остановка", en: "stop", example: "Η στάση είναι εδώ κοντά." },
+      { gr: "δρόμος", ru: "улица", en: "street", example: "Ο δρόμος είναι στενός." },
+      { gr: "κίνηση", ru: "трафик", en: "traffic", example: "Η κίνηση είναι τρελή." },
+      { gr: "βενζίνη", ru: "бензин", en: "gasoline", example: "Η βενζίνη ακρίβυνε." },
+      { gr: "δίπλωμα", ru: "права", en: "license", example: "Έχω κυπριακό δίπλωμα." },
+      { gr: "εισιτήριο", ru: "билет", en: "ticket", example: "Αγόρασα εισιτήριο." },
+      { gr: "χάρτης", ru: "карта", en: "map", example: "Κοίταξε τον χάρτη." },
+      { gr: "κυκλοφορία", ru: "движение", en: "traffic", example: "Η κυκλοφορία είναι δύσκολη." },
+      { gr: "ταξίδι", ru: "путешествие", en: "trip", example: "Το ταξίδι ήταν υπέροχο." },
+    ],
+    "Καιρός & Φύση": [
+      { gr: "ήλιος", ru: "солнце", en: "sun", example: "Ο ήλιος είναι δυνατός." },
+      { gr: "βροχή", ru: "дождь", en: "rain", example: "Πέφτει βροχή σήμερα." },
+      { gr: "ζέστη", ru: "жара", en: "heat", example: "Κάνει πολλή ζέστη." },
+      { gr: "κρύο", ru: "холод", en: "cold", example: "Δεν κάνει κρύο στην Κύπρο." },
+      { gr: "θάλασσα", ru: "море", en: "sea", example: "Η θάλασσα είναι ζεστή." },
+      { gr: "βουνό", ru: "гора", en: "mountain", example: "Ο Όλυμπος είναι ψηλό βουνό." },
+      { gr: "δέντρο", ru: "дерево", en: "tree", example: "Κάτω από το δέντρο." },
+      { gr: "παραλία", ru: "пляж", en: "beach", example: "Η παραλία είναι όμορφη." },
+      { gr: "χιόνι", ru: "снег", en: "snow", example: "Χιόνι στον Τρόοδος!" },
+      { gr: "αέρας", ru: "ветер", en: "wind", example: "Φυσάει δυνατός αέρας." },
+      { gr: "σύννεφο", ru: "облако", en: "cloud", example: "Ο ουρανός έχει σύννεφα." },
+      { gr: "άνοιξη", ru: "весна", en: "spring", example: "Η άνοιξη είναι όμορφη." },
+    ],
+  },
+  "B1": {
+    "Εκπαίδευση & Σπουδές": [
+      { gr: "πανεπιστήμιο", ru: "университет", en: "university", example: "Σπουδάζω στο πανεπιστήμιο." },
+      { gr: "πτυχίο", ru: "диплом", en: "degree", example: "Πήρα το πτυχίο μου." },
+      { gr: "εξετάσεις", ru: "экзамены", en: "exams", example: "Οι εξετάσεις είναι τον Μάιο." },
+      { gr: "μάθημα", ru: "урок", en: "lesson", example: "Το μάθημα αρχίζει στις 9." },
+      { gr: "καθηγητής", ru: "преподаватель", en: "professor", example: "Ο καθηγητής εξηγεί καλά." },
+      { gr: "σπουδαστής", ru: "студент", en: "student", example: "Είμαι σπουδαστής ελληνικών." },
+      { gr: "βιβλιοθήκη", ru: "библиотека", en: "library", example: "Διαβάζω στη βιβλιοθήκη." },
+      { gr: "πιστοποιητικό", ru: "сертификат", en: "certificate", example: "Χρειάζομαι πιστοποιητικό ελληνομάθειας." },
+      { gr: "υποτροφία", ru: "стипендия", en: "scholarship", example: "Πήρε υποτροφία." },
+      { gr: "σημειώσεις", ru: "конспекты", en: "notes", example: "Κρατάω σημειώσεις." },
+      { gr: "διάλεξη", ru: "лекция", en: "lecture", example: "Η διάλεξη ήταν ενδιαφέρουσα." },
+      { gr: "εργασία", ru: "задание", en: "assignment", example: "Γράφω μια εργασία." },
+    ],
+    "Πολιτογράφηση & Έγγραφα": [
+      { gr: "υπηκοότητα", ru: "гражданство", en: "citizenship", example: "Κάνω αίτηση για υπηκοότητα." },
+      { gr: "διαβατήριο", ru: "паспорт", en: "passport", example: "Το διαβατήριό μου λήγει." },
+      { gr: "ταυτότητα", ru: "удостоверение", en: "ID card", example: "Δείξε μου την ταυτότητά σου." },
+      { gr: "αίτηση", ru: "заявление", en: "application", example: "Υπέβαλα αίτηση." },
+      { gr: "άδεια παραμονής", ru: "ВНЖ", en: "residence permit", example: "Η άδεια παραμονής μου ανανεώθηκε." },
+      { gr: "μετάφραση", ru: "перевод", en: "translation", example: "Χρειάζομαι επίσημη μετάφραση." },
+      { gr: "δημαρχείο", ru: "мэрия", en: "city hall", example: "Πήγα στο δημαρχείο." },
+      { gr: "υπουργείο", ru: "министерство", en: "ministry", example: "Στο Υπουργείο Εσωτερικών." },
+      { gr: "νόμος", ru: "закон", en: "law", example: "Ο νόμος άλλαξε πρόσφατα." },
+      { gr: "δικαίωμα", ru: "право", en: "right", example: "Έχω δικαίωμα ψήφου." },
+      { gr: "υπογραφή", ru: "подпись", en: "signature", example: "Βάλε την υπογραφή σου." },
+      { gr: "βεβαίωση", ru: "справка", en: "confirmation", example: "Χρειάζομαι βεβαίωση εργοδότη." },
+      { gr: "αντίγραφο", ru: "копия", en: "copy", example: "Θέλω ένα αντίγραφο." },
+    ],
+    "Τεχνολογία & Ψηφιακός Κόσμος": [
+      { gr: "υπολογιστής", ru: "компьютер", en: "computer", example: "Δουλεύω με υπολογιστή." },
+      { gr: "κινητό", ru: "мобильный", en: "mobile", example: "Το κινητό μου χάλασε." },
+      { gr: "διαδίκτυο", ru: "интернет", en: "internet", example: "Χρειάζομαι γρήγορο διαδίκτυο." },
+      { gr: "ιστοσελίδα", ru: "веб-сайт", en: "website", example: "Η ιστοσελίδα είναι χρήσιμη." },
+      { gr: "εφαρμογή", ru: "приложение", en: "app", example: "Κατέβασα μια εφαρμογή." },
+      { gr: "κωδικός", ru: "пароль", en: "password", example: "Ξέχασα τον κωδικό μου." },
+      { gr: "αρχείο", ru: "файл", en: "file", example: "Αποθήκευσε το αρχείο." },
+      { gr: "εκτυπωτής", ru: "принтер", en: "printer", example: "Ο εκτυπωτής δεν δουλεύει." },
+      { gr: "πρόγραμμα", ru: "программа", en: "program", example: "Εγκατέστησα νέο πρόγραμμα." },
+    ],
+    "Κοινωνία & Πολιτισμός Κύπρου": [
+      { gr: "πολιτισμός", ru: "культура", en: "culture", example: "Ο κυπριακός πολιτισμός είναι πλούσιος." },
+      { gr: "παράδοση", ru: "традиция", en: "tradition", example: "Η παράδοση είναι σημαντική." },
+      { gr: "εκκλησία", ru: "церковь", en: "church", example: "Η εκκλησία είναι παλιά." },
+      { gr: "γιορτή", ru: "праздник", en: "holiday", example: "Σήμερα είναι γιορτή." },
+      { gr: "Πάσχα", ru: "Пасха", en: "Easter", example: "Το Πάσχα ψήνουμε αρνί." },
+      { gr: "Χριστούγεννα", ru: "Рождество", en: "Christmas", example: "Τα Χριστούγεννα είναι οικογενειακή γιορτή." },
+      { gr: "κοινότητα", ru: "сообщество", en: "community", example: "Η κοινότητα βοηθάει." },
+      { gr: "μουσείο", ru: "музей", en: "museum", example: "Επισκέφθηκα το μουσείο." },
+      { gr: "δημοκρατία", ru: "республика", en: "republic", example: "Η Κύπρος είναι δημοκρατία." },
+      { gr: "πρόεδρος", ru: "президент", en: "president", example: "Ο Πρόεδρος της Δημοκρατίας." },
+    ],
+    "Συναισθήματα & Χαρακτήρας": [
+      { gr: "χαρούμενος", ru: "радостный", en: "happy", example: "Είμαι πολύ χαρούμενος." },
+      { gr: "λυπημένος", ru: "грустный", en: "sad", example: "Γιατί είσαι λυπημένος;" },
+      { gr: "θυμωμένος", ru: "злой", en: "angry", example: "Μην είσαι θυμωμένος." },
+      { gr: "περήφανος", ru: "гордый", en: "proud", example: "Είμαι περήφανος για σένα." },
+      { gr: "ευγενικός", ru: "вежливый", en: "polite", example: "Να είσαι ευγενικός." },
+      { gr: "αγχωμένος", ru: "тревожный", en: "anxious", example: "Είμαι αγχωμένος για τις εξετάσεις." },
+      { gr: "ήρεμος", ru: "спокойный", en: "calm", example: "Μείνε ήρεμος." },
+      { gr: "κουρασμένος", ru: "уставший", en: "tired", example: "Είμαι πολύ κουρασμένος." },
+      { gr: "ενθουσιασμένος", ru: "восторженный", en: "excited", example: "Είμαι ενθουσιασμένος!" },
+      { gr: "αισιόδοξος", ru: "оптимистичный", en: "optimistic", example: "Είμαι αισιόδοξος για το μέλλον." },
+    ],
+    "Υπηρεσίες & Καθημερινότητα": [
+      { gr: "τράπεζα", ru: "банк", en: "bank", example: "Πηγαίνω στην τράπεζα." },
+      { gr: "ταχυδρομείο", ru: "почта", en: "post office", example: "Στέλνω δέμα από το ταχυδρομείο." },
+      { gr: "αστυνομία", ru: "полиция", en: "police", example: "Κάλεσε την αστυνομία." },
+      { gr: "δικηγόρος", ru: "адвокат", en: "lawyer", example: "Χρειάζομαι δικηγόρο." },
+      { gr: "λογιστής", ru: "бухгалтер", en: "accountant", example: "Ο λογιστής μου κάνει τη δήλωση." },
+      { gr: "ασφάλιση", ru: "страхование", en: "insurance", example: "Έχω ασφάλιση υγείας." },
+      { gr: "ηλεκτρισμός", ru: "электричество", en: "electricity", example: "Ο λογαριασμός ηλεκτρισμού." },
+      { gr: "ύδρευση", ru: "водоснабжение", en: "water supply", example: "Ο λογαριασμός ύδρευσης." },
+      { gr: "συντήρηση", ru: "обслуживание", en: "maintenance", example: "Χρειάζεται συντήρηση." },
+    ],
+  }
+};
+
+const ONBOARDING_WORDS = [
+  { gr: "σπίτι", ru: "дом", difficulty: 1 }, { gr: "νερό", ru: "вода", difficulty: 1 },
+  { gr: "φίλος", ru: "друг", difficulty: 1 }, { gr: "καφές", ru: "кофе", difficulty: 1 },
+  { gr: "γιατρός", ru: "врач", difficulty: 1 }, { gr: "ενοίκιο", ru: "аренда", difficulty: 2 },
+  { gr: "συνέντευξη", ru: "собеседование", difficulty: 2 }, { gr: "κρυολόγημα", ru: "простуда", difficulty: 2 },
+  { gr: "απόδειξη", ru: "чек", difficulty: 2 }, { gr: "εισιτήριο", ru: "билет", difficulty: 2 },
+  { gr: "βιογραφικό", ru: "резюме", difficulty: 3 }, { gr: "κυκλοφορία", ru: "движение", difficulty: 3 },
+  { gr: "πιστοποιητικό", ru: "сертификат", difficulty: 3 }, { gr: "εφαρμογή", ru: "приложение", difficulty: 3 },
+  { gr: "υπηκοότητα", ru: "гражданство", difficulty: 4 }, { gr: "δημοκρατία", ru: "республика", difficulty: 4 },
+  { gr: "εθελοντισμός", ru: "волонтёрство", difficulty: 4 }, { gr: "βεβαίωση", ru: "справка", difficulty: 4 },
+  { gr: "υποτροφία", ru: "стипендия", difficulty: 4 },
+  { gr: "αρχαιολογικός χώρος", ru: "археологический памятник", difficulty: 5 },
+];
+
+// --- SM-2 ---
+const getInitialCardState = () => ({ interval: 0, ease: 2.5, repetitions: 0, nextReview: Date.now(), lastResult: null });
+const updateCardState = (card, q) => {
+  let { interval, ease, repetitions } = card;
+  if (q < 3) { repetitions = 0; interval = 0; }
+  else {
+    if (repetitions === 0) interval = 1;
+    else if (repetitions === 1) interval = 3;
+    else interval = Math.round(interval * ease);
+    ease = Math.max(1.3, ease + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02)));
+    repetitions += 1;
+  }
+  return { interval, ease, repetitions, nextReview: Date.now() + interval * 864e5, lastResult: q };
+};
+const shuffle = (a) => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+// --- STYLES ---
+const font = "'DM Sans', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif";
+const C = {
+  // Mediterranean palette
+  bg: "#f7f5f0",           // warm parchment
+  surface: "#ffffff",
+  surfaceHover: "#faf9f6",
+  card: "#ffffff",
+  border: "#e8e4dc",
+  borderLight: "#f0ede6",
+  
+  primary: "#1a3a5c",       // deep navy
+  primaryLight: "#2d5f8a",
+  primaryGlow: "rgba(26,58,92,0.08)",
+  
+  accent: "#c4763a",        // warm terracotta
+  accentLight: "#d4945e",
+  accentGlow: "rgba(196,118,58,0.1)",
+  
+  teal: "#2a9d8f",          // Mediterranean sea
+  tealLight: "#40b4a6",
+  tealGlow: "rgba(42,157,143,0.08)",
+  
+  success: "#2a9d8f",
+  successBg: "rgba(42,157,143,0.08)",
+  warning: "#e9a820",
+  warningBg: "rgba(233,168,32,0.08)",
+  danger: "#c1453b",
+  dangerBg: "rgba(193,69,59,0.08)",
+  
+  text: "#1a1a1a",
+  textSecondary: "#5a5a52",
+  textMuted: "#9a9a90",
+  white: "#ffffff",
+  greek: "#1a3a5c",
+};
+
+const shadow = {
+  sm: "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)",
+  md: "0 4px 12px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
+  lg: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)",
+  xl: "0 16px 50px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06)",
+};
+
+// --- Components ---
+const ProgressBar = ({ value, max, color = C.teal, height = 5 }) => (
+  <div style={{ width: "100%", height, borderRadius: height, background: `${color}15`, overflow: "hidden" }}>
+    <div style={{
+      width: `${Math.min(100, (value / max) * 100)}%`, height: "100%",
+      background: color, borderRadius: height,
+      transition: "width 0.5s cubic-bezier(0.4,0,0.2,1)",
+    }} />
+  </div>
+);
+
+const Badge = ({ children, color = C.primary, filled = false }) => (
+  <span style={{
+    display: "inline-block", padding: "4px 12px", borderRadius: 8,
+    fontSize: 11, fontWeight: 700, letterSpacing: 0.8, textTransform: "uppercase",
+    background: filled ? color : `${color}10`, color: filled ? C.white : color,
+  }}>{children}</span>
+);
+
+const IconBtn = ({ onClick, children, style = {} }) => (
+  <button onClick={onClick} style={{
+    background: "none", border: "none", cursor: "pointer",
+    width: 40, height: 40, borderRadius: 12, display: "flex",
+    alignItems: "center", justifyContent: "center",
+    color: C.textMuted, fontSize: 18, transition: "all 0.15s", ...style,
+  }}>{children}</button>
+);
+
+// ======= MAIN =======
+function App() {
+  const [screen, setScreen] = useState("onboarding");
+  const [selectedLevel, setSelectedLevel] = useState("A2");
+  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [cardStates, setCardStates] = useState({});
+  const [sessionWords, setSessionWords] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [quizOptions, setQuizOptions] = useState([]);
+  const [quizAnswer, setQuizAnswer] = useState(null);
+  const [sessionResults, setSessionResults] = useState([]);
+  const [matchPairs, setMatchPairs] = useState([]);
+  const [matchSelected, setMatchSelected] = useState([]);
+  const [matchMatched, setMatchMatched] = useState(new Set());
+  const [matchErrors, setMatchErrors] = useState(0);
+  const [exerciseMode, setExerciseMode] = useState("flashcards");
+  const [wordListFilter, setWordListFilter] = useState("all");
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+  const [onbWords, setOnbWords] = useState([]);
+  const [onbIndex, setOnbIndex] = useState(0);
+  const [onbCorrect, setOnbCorrect] = useState(0);
+  const [onbTimeLeft, setOnbTimeLeft] = useState(60);
+  const [onbStarted, setOnbStarted] = useState(false);
+  const [onbFinished, setOnbFinished] = useState(false);
+  const [onbOptions, setOnbOptions] = useState([]);
+  const [onbAnswer, setOnbAnswer] = useState(null);
+  const [fadeIn, setFadeIn] = useState(true);
+  const timerRef = useRef(null);
+
+  const getWordsForLevel = useCallback((level) => {
+    return Object.entries(WORD_DATABASE[level] || {}).flatMap(([topic, words]) => words.map(w => ({ ...w, topic, level })));
+  }, []);
+  const getWordsForTopic = useCallback((level, topic) => {
+    return (WORD_DATABASE[level]?.[topic] || []).map(w => ({ ...w, topic, level }));
+  }, []);
+  const getCardKey = (w) => `${w.level}:${w.gr}`;
+
+  const getStats = useCallback(() => {
+    const all = [...getWordsForLevel("A2"), ...getWordsForLevel("B1")];
+    let learned = 0, reviewing = 0, newW = 0;
+    all.forEach(w => { const s = cardStates[`${w.level}:${w.gr}`]; if (!s) newW++; else if (s.repetitions >= 3) learned++; else reviewing++; });
+    return { total: all.length, learned, reviewing, new: newW };
+  }, [cardStates, getWordsForLevel]);
+
+  const getWordsByStatus = useCallback((f) => {
+    return [...getWordsForLevel("A2"), ...getWordsForLevel("B1")].filter(w => {
+      const s = cardStates[`${w.level}:${w.gr}`];
+      if (f === "all") return true;
+      if (f === "new") return !s;
+      if (f === "learned") return s && s.repetitions >= 3;
+      if (f === "reviewing") return s && s.repetitions > 0 && s.repetitions < 3;
+      return true;
+    });
+  }, [cardStates, getWordsForLevel]);
+
+  // Animate screen transitions
+  const navigateTo = (s) => { setFadeIn(false); setTimeout(() => { setScreen(s); setFadeIn(true); }, 120); };
+
+  // Onboarding
+  const startOnboarding = () => {
+    const w = shuffle(ONBOARDING_WORDS);
+    setOnbWords(w); setOnbIndex(0); setOnbCorrect(0); setOnbTimeLeft(60);
+    setOnbStarted(true); setOnbFinished(false); setOnbAnswer(null);
+    const correct = w[0]; const others = shuffle(w.filter(x => x.gr !== correct.gr)).slice(0, 3);
+    setOnbOptions(shuffle([correct, ...others]));
+    timerRef.current = setInterval(() => {
+      setOnbTimeLeft(p => { if (p <= 1) { clearInterval(timerRef.current); setOnbFinished(true); return 0; } return p - 1; });
+    }, 1000);
+  };
+
+  const handleOnbAnswer = (opt) => {
+    if (onbAnswer !== null || onbFinished) return;
+    const isCorrect = opt.gr === onbWords[onbIndex].gr;
+    setOnbAnswer(opt.gr);
+    if (isCorrect) setOnbCorrect(p => p + 1);
+    setTimeout(() => {
+      const next = onbIndex + 1;
+      if (next >= onbWords.length || onbTimeLeft <= 0) { clearInterval(timerRef.current); setOnbFinished(true); }
+      else {
+        setOnbIndex(next); setOnbAnswer(null);
+        const c = onbWords[next]; const o = shuffle(onbWords.filter(x => x.gr !== c.gr)).slice(0, 3);
+        setOnbOptions(shuffle([c, ...o]));
+      }
+    }, 500);
+  };
+
+  const finishOnboarding = (lvl) => { setSelectedLevel(lvl); setHasCompletedOnboarding(true); navigateTo("home"); };
+  useEffect(() => () => { if (timerRef.current) clearInterval(timerRef.current); }, []);
+
+  // Session
+  const startSession = (level, topic, mode) => {
+    const words = topic ? getWordsForTopic(level, topic) : getWordsForLevel(level);
+    const sh = shuffle(words).slice(0, 15);
+    setSessionWords(sh); setCurrentIndex(0); setShowTranslation(false);
+    setSessionResults([]); setQuizAnswer(null); setExerciseMode(mode); setSelectedTopic(topic);
+    if (mode === "match") {
+      const mw = sh.slice(0, 6);
+      setMatchPairs([...shuffle(mw.map((w,i) => ({ id:`gr-${i}`, text:w.gr, pairId:i, type:"gr" }))), ...shuffle(mw.map((w,i) => ({ id:`ru-${i}`, text:w.ru, pairId:i, type:"ru" })))]);
+      setMatchSelected([]); setMatchMatched(new Set()); setMatchErrors(0);
+      navigateTo("match");
+    } else if (mode === "quiz") {
+      const c = sh[0]; const o = shuffle(sh.filter(w => w.gr !== c.gr)).slice(0, 3);
+      setQuizOptions(shuffle([c, ...o])); navigateTo("quiz");
+    } else { navigateTo("flashcards"); }
+  };
+
+  const rateCard = (word, q) => {
+    const key = getCardKey(word);
+    const cur = cardStates[key] || getInitialCardState();
+    setCardStates(p => ({ ...p, [key]: updateCardState(cur, q) }));
+    setSessionResults(p => [...p, { word, quality: q }]);
+  };
+
+  const nextCard = () => {
+    if (currentIndex + 1 >= sessionWords.length) { navigateTo("results"); return; }
+    const ni = currentIndex + 1;
+    setCurrentIndex(ni); setShowTranslation(false); setQuizAnswer(null);
+    if (exerciseMode === "quiz") {
+      const c = sessionWords[ni]; const o = shuffle(sessionWords.filter(w => w.gr !== c.gr)).slice(0, 3);
+      setQuizOptions(shuffle([c, ...o]));
+    }
+  };
+
+  const goHome = () => { setSelectedTopic(null); navigateTo("home"); };
+  const currentWord = sessionWords[currentIndex];
+
+  const wrap = (children) => (
+    <div style={{
+      minHeight: "100vh", background: C.bg, color: C.text, fontFamily: font,
+      opacity: fadeIn ? 1 : 0, transition: "opacity 0.12s ease",
+      WebkitFontSmoothing: "antialiased",
+    }}>{children}</div>
+  );
+
+  // ========== ONBOARDING ==========
+  if (screen === "onboarding" && !hasCompletedOnboarding) {
+    if (!onbStarted) {
+      return wrap(
+        <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 28 }}>
+          <div style={{
+            width: 72, height: 72, borderRadius: 20, background: C.primary,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            marginBottom: 20, boxShadow: shadow.lg,
+          }}>
+            <span style={{ fontSize: 36, color: C.white, fontWeight: 800, fontFamily: "'Georgia', serif" }}>λ</span>
+          </div>
+          <h1 style={{ fontSize: 28, fontWeight: 800, margin: "0 0 6px", color: C.primary, letterSpacing: -0.5 }}>Lexmatheia</h1>
+          <p style={{ color: C.textSecondary, fontSize: 14, margin: "0 0 44px", textAlign: "center", lineHeight: 1.5, maxWidth: 280 }}>
+            Греческая лексика для экзамена<br />Ελληνομάθεια A2/B1
+          </p>
+          <div style={{
+            background: C.surface, borderRadius: 24, padding: "32px 28px", maxWidth: 360, width: "100%",
+            boxShadow: shadow.lg, textAlign: "center",
+          }}>
+            <div style={{ width: 52, height: 52, borderRadius: 16, background: C.accentGlow, display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+              <span style={{ fontSize: 24 }}>🎯</span>
+            </div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px", color: C.text }}>Определим твой уровень</h3>
+            <p style={{ color: C.textMuted, fontSize: 13, margin: "0 0 28px", lineHeight: 1.6 }}>
+              Быстрый тест — 1 минута. Выбирай перевод греческих слов, и мы подберём программу.
+            </p>
+            <button onClick={startOnboarding} style={{
+              width: "100%", padding: "16px", borderRadius: 14, border: "none",
+              background: C.primary, color: C.white, fontSize: 15, fontWeight: 700,
+              cursor: "pointer", boxShadow: shadow.md, transition: "transform 0.15s",
+            }}>Начать тест</button>
+            <button onClick={() => finishOnboarding("A2")} style={{
+              width: "100%", padding: "14px", marginTop: 10, borderRadius: 12,
+              background: "transparent", border: "none",
+              color: C.textMuted, fontSize: 13, cursor: "pointer",
+            }}>Пропустить — начать с A2</button>
+          </div>
+        </div>
+      );
+    }
+
+    if (onbFinished) {
+      const totalAnswered = onbIndex + (onbAnswer !== null ? 1 : 0);
+      const rec = onbCorrect >= 10 ? "B1" : "A2";
+      return wrap(
+        <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 28 }}>
+          <div style={{ fontSize: 52, marginBottom: 16 }}>{onbCorrect >= 10 ? "🌟" : onbCorrect >= 5 ? "👍" : "📚"}</div>
+          <h2 style={{ fontSize: 22, fontWeight: 700, margin: "0 0 6px" }}>Готово!</h2>
+          <p style={{ color: C.textSecondary, fontSize: 14, margin: "0 0 32px" }}>{onbCorrect} из {totalAnswered} правильно</p>
+          <div style={{ background: C.surface, borderRadius: 24, padding: 28, maxWidth: 340, width: "100%", boxShadow: shadow.lg, textAlign: "center", marginBottom: 24 }}>
+            <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8, letterSpacing: 1, textTransform: "uppercase" }}>Рекомендуем</div>
+            <div style={{ fontSize: 52, fontWeight: 800, color: C.primary, marginBottom: 6 }}>{rec}</div>
+            <div style={{ fontSize: 13, color: C.textSecondary }}>{rec === "A2" ? "Базовый — начнём с основ" : "Средний — хорошая база!"}</div>
+          </div>
+          <button onClick={() => finishOnboarding(rec)} style={{
+            maxWidth: 340, width: "100%", padding: "16px", borderRadius: 14,
+            background: C.primary, border: "none", color: C.white, fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: shadow.md,
+          }}>Начать с {rec}</button>
+          <button onClick={() => finishOnboarding(rec === "A2" ? "B1" : "A2")} style={{
+            maxWidth: 340, width: "100%", padding: "14px", marginTop: 8, borderRadius: 12,
+            background: "transparent", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer",
+          }}>Выбрать {rec === "A2" ? "B1" : "A2"}</button>
+        </div>
+      );
+    }
+
+    // Active quiz
+    const onbCur = onbWords[onbIndex];
+    return wrap(
+      <div style={{ padding: "24px 20px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 600 }}>{onbIndex + 1}/{onbWords.length}</span>
+          <div style={{
+            padding: "6px 16px", borderRadius: 20, fontSize: 16, fontWeight: 800,
+            background: onbTimeLeft <= 10 ? C.dangerBg : C.surface,
+            color: onbTimeLeft <= 10 ? C.danger : C.primary, boxShadow: shadow.sm,
+          }}>{onbTimeLeft}с</div>
+          <span style={{ fontSize: 13, color: C.success, fontWeight: 700 }}>{onbCorrect} ✓</span>
+        </div>
+        <ProgressBar value={60 - onbTimeLeft} max={60} color={onbTimeLeft <= 10 ? C.danger : C.teal} />
+        <div style={{ textAlign: "center", margin: "56px 0 44px" }}>
+          <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 16, letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 600 }}>Как переводится?</div>
+          <div style={{ fontSize: 40, fontWeight: 800, color: C.primary }}>{onbCur.gr}</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {onbOptions.map((opt, i) => {
+            const isCorrect = opt.gr === onbCur.gr;
+            const isSel = onbAnswer === opt.gr;
+            const show = onbAnswer !== null;
+            let bg = C.surface, bc = "transparent", tc = C.text;
+            if (show && isCorrect) { bg = C.successBg; bc = C.success; tc = C.success; }
+            if (show && isSel && !isCorrect) { bg = C.dangerBg; bc = C.danger; tc = C.danger; }
+            return (
+              <button key={i} onClick={() => handleOnbAnswer(opt)} style={{
+                padding: "17px 22px", borderRadius: 16, background: bg,
+                border: `2px solid ${bc}`, color: tc, fontSize: 16, fontWeight: 600,
+                cursor: onbAnswer !== null ? "default" : "pointer", textAlign: "left",
+                boxShadow: show ? "none" : shadow.sm, transition: "all 0.2s",
+              }}>{opt.ru}</button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ========== WORD LIST ==========
+  if (screen === "wordlist") {
+    const words = getWordsByStatus(wordListFilter);
+    const stats = getStats();
+    const filters = [
+      { key: "all", label: "Все", count: stats.total, color: C.primary },
+      { key: "learned", label: "Выучено", count: stats.learned, color: C.success },
+      { key: "reviewing", label: "Повторение", count: stats.reviewing, color: C.warning },
+      { key: "new", label: "Новые", count: stats.new, color: C.textMuted },
+    ];
+    return wrap(
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+        <button onClick={goHome} style={{ background: "none", border: "none", color: C.textMuted, cursor: "pointer", fontSize: 13, fontWeight: 600, padding: "8px 0", marginBottom: 8 }}>← Назад</button>
+        <h2 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 18px", color: C.primary }}>Мои слова</h2>
+        <div style={{ display: "flex", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
+          {filters.map(f => (
+            <button key={f.key} onClick={() => setWordListFilter(f.key)} style={{
+              padding: "7px 14px", borderRadius: 10, fontSize: 12, fontWeight: 700,
+              background: wordListFilter === f.key ? f.color : C.surface,
+              border: "none", color: wordListFilter === f.key ? C.white : C.textMuted,
+              cursor: "pointer", boxShadow: wordListFilter === f.key ? shadow.sm : "none",
+              transition: "all 0.15s",
+            }}>{f.label} · {f.count}</button>
+          ))}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          {words.length === 0 && <div style={{ textAlign: "center", padding: "48px 0", color: C.textMuted, fontSize: 14 }}>Пусто — начни тренировку!</div>}
+          {words.map((w, i) => {
+            const s = cardStates[`${w.level}:${w.gr}`];
+            const st = !s ? "new" : s.repetitions >= 3 ? "learned" : "reviewing";
+            const sc = st === "learned" ? C.success : st === "reviewing" ? C.warning : "#d4d0c8";
+            return (
+              <div key={`${w.level}-${w.gr}-${i}`} style={{
+                padding: "12px 16px", borderRadius: 12, background: C.surface,
+                display: "flex", alignItems: "center", gap: 12,
+              }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: sc, flexShrink: 0 }} />
+                <span style={{ fontWeight: 700, color: C.primary, fontSize: 15 }}>{w.gr}</span>
+                <span style={{ color: "#c4c0b8" }}>·</span>
+                <span style={{ color: C.textSecondary, fontSize: 14, flex: 1 }}>{w.ru}</span>
+                <Badge color={C.textMuted}>{w.level}</Badge>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ========== HOME ==========
+  if (screen === "home") {
+    const stats = getStats();
+    return wrap(
+      <>
+        {/* Header */}
+        <div style={{ padding: "28px 24px 20px", position: "relative" }}>
+          <div style={{ position: "absolute", top: 20, right: 20, display: "flex", gap: 2, background: C.surface, borderRadius: 10, padding: 3, boxShadow: shadow.sm }}>
+            {["A2", "B1"].map(l => (
+              <button key={l} onClick={() => setSelectedLevel(l)} style={{
+                padding: "6px 16px", borderRadius: 8, fontSize: 12, fontWeight: 800,
+                background: selectedLevel === l ? C.primary : "transparent",
+                border: "none", color: selectedLevel === l ? C.white : C.textMuted,
+                cursor: "pointer", transition: "all 0.15s",
+              }}>{l}</button>
+            ))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 14, background: C.primary,
+              display: "flex", alignItems: "center", justifyContent: "center", boxShadow: shadow.md,
+            }}>
+              <span style={{ fontSize: 22, color: C.white, fontWeight: 800, fontFamily: "'Georgia', serif" }}>λ</span>
+            </div>
+            <div>
+              <h1 style={{ fontSize: 20, fontWeight: 800, margin: 0, color: C.primary, letterSpacing: -0.3 }}>Lexmatheia</h1>
+              <p style={{ fontSize: 11, color: C.textMuted, margin: 0, letterSpacing: 0.3 }}>Ελληνομάθεια · {selectedLevel}</p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ padding: "0 20px", maxWidth: 480, margin: "0 auto" }}>
+          {/* Stats card */}
+          <div onClick={() => navigateTo("wordlist")} style={{
+            background: C.surface, borderRadius: 20, padding: "22px 24px",
+            marginBottom: 24, cursor: "pointer", boxShadow: shadow.md,
+            transition: "transform 0.15s, box-shadow 0.15s",
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+              {[
+                { v: stats.learned, l: "Выучено", c: C.success, icon: "✓" },
+                { v: stats.reviewing, l: "Повторение", c: C.warning, icon: "↻" },
+                { v: stats.new, l: "Новые", c: C.textMuted, icon: "+" },
+              ].map(({ v, l, c, icon }, i) => (
+                <div key={l} style={{ textAlign: "center", flex: 1 }}>
+                  <div style={{ fontSize: 26, fontWeight: 800, color: c }}>{v}</div>
+                  <div style={{ fontSize: 10, color: C.textMuted, marginTop: 2, fontWeight: 600, letterSpacing: 0.3 }}>{l}</div>
+                </div>
+              ))}
+            </div>
+            <ProgressBar value={stats.learned} max={stats.total} color={C.success} />
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10 }}>
+              <span style={{ fontSize: 11, color: C.textMuted }}>{stats.learned} из {stats.total}</span>
+              <span style={{ fontSize: 11, color: C.accent, fontWeight: 700 }}>Все слова →</span>
+            </div>
+          </div>
+
+          {/* Training modes */}
+          <h3 style={{ fontSize: 11, fontWeight: 800, color: C.textMuted, marginBottom: 12, letterSpacing: 1.5, textTransform: "uppercase" }}>Тренировка</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 32 }}>
+            {[
+              { mode: "flashcards", icon: "🃏", label: "Карточки", color: C.primary },
+              { mode: "quiz", icon: "✅", label: "Тест", color: C.teal },
+              { mode: "match", icon: "🔗", label: "Пары", color: C.accent },
+            ].map(({ mode, icon, label, color }) => (
+              <button key={mode} onClick={() => startSession(selectedLevel, null, mode)} style={{
+                padding: "24px 10px 18px", borderRadius: 18, border: "none",
+                background: C.surface, color: C.text, cursor: "pointer",
+                textAlign: "center", boxShadow: shadow.sm,
+                transition: "all 0.15s",
+              }}>
+                <div style={{ fontSize: 28, marginBottom: 10 }}>{icon}</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color }}>{label}</div>
+              </button>
+            ))}
+          </div>
+
+          {/* Topics */}
+          <h3 style={{ fontSize: 11, fontWeight: 800, color: C.textMuted, marginBottom: 12, letterSpacing: 1.5, textTransform: "uppercase" }}>Темы</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingBottom: 40 }}>
+            {Object.entries(WORD_DATABASE[selectedLevel] || {}).map(([topic, words]) => {
+              const learned = words.filter(w => { const s = cardStates[`${selectedLevel}:${w.gr}`]; return s && s.repetitions >= 3; }).length;
+              const pct = words.length > 0 ? Math.round((learned / words.length) * 100) : 0;
+              return (
+                <button key={topic} onClick={() => { setSelectedTopic(topic); navigateTo("topics"); }} style={{
+                  padding: "16px 18px", borderRadius: 16, border: "none",
+                  background: C.surface, color: C.text, cursor: "pointer",
+                  display: "flex", alignItems: "center", gap: 14, textAlign: "left",
+                  boxShadow: shadow.sm, transition: "all 0.15s",
+                }}>
+                  <div style={{
+                    width: 44, height: 44, borderRadius: 14, background: C.primaryGlow,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 20, flexShrink: 0,
+                  }}>{TOPIC_ICONS[topic] || "📖"}</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{TOPIC_RU[topic] || topic}</div>
+                    <div style={{ fontSize: 11, color: C.textMuted, marginTop: 3 }}>{words.length} слов · {learned} выучено</div>
+                  </div>
+                  <div style={{ textAlign: "right", minWidth: 36 }}>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: pct > 0 ? C.teal : C.textMuted }}>{pct}%</div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // ========== TOPIC DETAIL ==========
+  if (screen === "topics") {
+    const words = getWordsForTopic(selectedLevel, selectedTopic);
+    return wrap(
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+        <button onClick={goHome} style={{ background: "none", border: "none", color: C.textMuted, cursor: "pointer", fontSize: 13, fontWeight: 600, padding: "8px 0", marginBottom: 8 }}>← Назад</button>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 16, background: C.primaryGlow, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>
+            {TOPIC_ICONS[selectedTopic] || "📖"}
+          </div>
+          <div>
+            <h2 style={{ fontSize: 20, fontWeight: 800, margin: 0, color: C.primary }}>{TOPIC_RU[selectedTopic] || selectedTopic}</h2>
+            <p style={{ fontSize: 12, color: C.textMuted, margin: "2px 0 0" }}>{words.length} слов · {selectedLevel}</p>
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 28 }}>
+          {["flashcards", "quiz", "match"].map(m => (
+            <button key={m} onClick={() => startSession(selectedLevel, selectedTopic, m)} style={{
+              padding: "14px 8px", borderRadius: 14, border: "none",
+              background: C.surface, color: C.text, cursor: "pointer",
+              fontSize: 12, fontWeight: 700, boxShadow: shadow.sm,
+            }}>{{ flashcards: "🃏 Карточки", quiz: "✅ Тест", match: "🔗 Пары" }[m]}</button>
+          ))}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          {words.map((w, i) => {
+            const s = cardStates[`${w.level}:${w.gr}`];
+            const st = !s ? "#d4d0c8" : s.repetitions >= 3 ? C.success : C.warning;
+            return (
+              <div key={i} style={{ padding: "12px 16px", borderRadius: 12, background: C.surface, display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 7, height: 7, borderRadius: "50%", background: st }} />
+                <span style={{ fontWeight: 700, color: C.primary, fontSize: 15 }}>{w.gr}</span>
+                <span style={{ color: "#d4d0c8" }}>·</span>
+                <span style={{ color: C.textSecondary, fontSize: 14, flex: 1 }}>{w.ru}</span>
+                <span style={{ fontSize: 11, color: C.textMuted }}>{w.en}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ========== FLASHCARDS ==========
+  if (screen === "flashcards" && currentWord) {
+    return wrap(
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <IconBtn onClick={goHome}>✕</IconBtn>
+          <Badge color={C.primary}>{selectedLevel} · Карточки</Badge>
+          <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 700, minWidth: 40, textAlign: "right" }}>{currentIndex + 1}/{sessionWords.length}</span>
+        </div>
+        <ProgressBar value={currentIndex + 1} max={sessionWords.length} />
+
+        <div onClick={() => setShowTranslation(!showTranslation)} style={{
+          marginTop: 36, padding: "56px 32px", borderRadius: 24,
+          background: C.surface, cursor: "pointer", textAlign: "center",
+          minHeight: 240, display: "flex", flexDirection: "column",
+          justifyContent: "center", alignItems: "center",
+          boxShadow: shadow.xl, transition: "transform 0.2s",
+        }}>
+          {!showTranslation ? (
+            <>
+              <div style={{ fontSize: 40, fontWeight: 800, color: C.primary, marginBottom: 16, lineHeight: 1.1 }}>{currentWord.gr}</div>
+              <div style={{ fontSize: 13, color: C.textMuted, fontWeight: 500 }}>Нажми, чтобы перевернуть</div>
+            </>
+          ) : (
+            <>
+              <div style={{ fontSize: 30, fontWeight: 800, color: C.primary, marginBottom: 12 }}>{currentWord.gr}</div>
+              <div style={{ width: 32, height: 2, background: C.border, margin: "0 0 16px", borderRadius: 1 }} />
+              <div style={{ fontSize: 24, fontWeight: 700, color: C.text, marginBottom: 6 }}>{currentWord.ru}</div>
+              <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>{currentWord.en}</div>
+              <div style={{
+                fontSize: 13, color: C.textSecondary, fontStyle: "italic",
+                padding: "12px 18px", background: C.bg, borderRadius: 12,
+                maxWidth: 300, lineHeight: 1.5,
+              }}>{currentWord.example}</div>
+            </>
+          )}
+        </div>
+
+        {showTranslation && (
+          <div style={{ display: "flex", gap: 8, marginTop: 28 }}>
+            {[
+              { q: 0, label: "Не знаю", color: C.danger, bg: C.dangerBg },
+              { q: 3, label: "Трудно", color: C.warning, bg: C.warningBg },
+              { q: 4, label: "Знаю", color: C.teal, bg: C.tealGlow },
+              { q: 5, label: "Легко", color: C.success, bg: C.successBg },
+            ].map(({ q, label, color, bg }) => (
+              <button key={q} onClick={() => { rateCard(currentWord, q); nextCard(); }} style={{
+                flex: 1, padding: "15px 6px", borderRadius: 14, background: bg,
+                border: "none", color, fontSize: 13, fontWeight: 700,
+                cursor: "pointer", transition: "transform 0.1s",
+              }}>{label}</button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ========== QUIZ ==========
+  if (screen === "quiz" && currentWord) {
+    return wrap(
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <IconBtn onClick={goHome}>✕</IconBtn>
+          <Badge color={C.teal}>{selectedLevel} · Тест</Badge>
+          <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 700, minWidth: 40, textAlign: "right" }}>{currentIndex + 1}/{sessionWords.length}</span>
+        </div>
+        <ProgressBar value={currentIndex + 1} max={sessionWords.length} color={C.teal} />
+        <div style={{ textAlign: "center", margin: "52px 0 44px" }}>
+          <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 16, letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 700 }}>Как переводится?</div>
+          <div style={{ fontSize: 38, fontWeight: 800, color: C.primary }}>{currentWord.gr}</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {quizOptions.map((opt, i) => {
+            const isC = opt.gr === currentWord.gr;
+            const isS = quizAnswer === i;
+            const show = quizAnswer !== null;
+            let bg = C.surface, bc = "transparent", tc = C.text;
+            if (show && isC) { bg = C.successBg; bc = C.success; tc = C.success; }
+            if (show && isS && !isC) { bg = C.dangerBg; bc = C.danger; tc = C.danger; }
+            return (
+              <button key={i} onClick={() => {
+                if (quizAnswer !== null) return;
+                setQuizAnswer(i); rateCard(currentWord, isC ? 4 : 0);
+                setTimeout(nextCard, 1000);
+              }} style={{
+                padding: "17px 22px", borderRadius: 16, background: bg,
+                border: `2px solid ${bc}`, color: tc, fontSize: 16, fontWeight: 600,
+                cursor: quizAnswer !== null ? "default" : "pointer", textAlign: "left",
+                boxShadow: show ? "none" : shadow.sm, transition: "all 0.2s",
+              }}>{opt.ru}</button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ========== MATCH ==========
+  if (screen === "match") {
+    const grItems = matchPairs.filter(p => p.type === "gr");
+    const ruItems = matchPairs.filter(p => p.type === "ru");
+    const totalP = grItems.length;
+    const matchedC = matchMatched.size / 2;
+
+    const handleMatch = (item) => {
+      if (matchMatched.has(item.pairId + "-" + item.type)) return;
+      if (matchSelected.length === 0) setMatchSelected([item]);
+      else if (matchSelected.length === 1) {
+        const f = matchSelected[0];
+        if (f.id === item.id) { setMatchSelected([]); return; }
+        if (f.type === item.type) { setMatchSelected([item]); return; }
+        if (f.pairId === item.pairId) {
+          const nm = new Set([...matchMatched, f.pairId+"-"+f.type, item.pairId+"-"+item.type]);
+          setMatchMatched(nm); setMatchSelected([]);
+          const mw = sessionWords.find(w => w.gr === (f.type === "gr" ? f.text : item.text));
+          if (mw) rateCard(mw, 4);
+          if (nm.size / 2 >= totalP) setTimeout(() => navigateTo("results"), 700);
+        } else {
+          setMatchErrors(p => p + 1); setMatchSelected([f, item]);
+          const mw = sessionWords.find(w => w.gr === (f.type === "gr" ? f.text : item.text));
+          if (mw) rateCard(mw, 0);
+          setTimeout(() => setMatchSelected([]), 500);
+        }
+      }
+    };
+
+    return wrap(
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <IconBtn onClick={goHome}>✕</IconBtn>
+          <Badge color={C.accent}>{selectedLevel} · Пары</Badge>
+          <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 700 }}>{matchedC}/{totalP}</span>
+        </div>
+        <ProgressBar value={matchedC} max={totalP} color={C.accent} />
+        <div style={{ fontSize: 13, color: C.textSecondary, textAlign: "center", margin: "14px 0 22px", fontWeight: 500 }}>
+          Соедини слово с переводом
+          {matchErrors > 0 && <span style={{ color: C.danger, marginLeft: 8, fontWeight: 700 }}>· {matchErrors} ош.</span>}
+        </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          {[grItems, ruItems].map((items, col) => (
+            <div key={col} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+              {items.map(item => {
+                const isMtch = matchMatched.has(item.pairId + "-" + item.type);
+                const isSel = matchSelected.some(s => s.id === item.id);
+                const isWrong = matchSelected.length === 2 && isSel && matchSelected[0].pairId !== matchSelected[1].pairId;
+                let bg = C.surface, bc = "transparent", tc = col === 0 ? C.primary : C.text;
+                if (isMtch) { bg = C.successBg; bc = C.success; tc = C.success; }
+                else if (isWrong) { bg = C.dangerBg; bc = C.danger; }
+                else if (isSel) { bg = C.primaryGlow; bc = C.primary; }
+                return (
+                  <button key={item.id} onClick={() => handleMatch(item)} style={{
+                    padding: "15px 12px", borderRadius: 14, fontSize: col === 0 ? 15 : 14,
+                    fontWeight: col === 0 ? 700 : 600, background: bg,
+                    border: `2px solid ${bc}`, color: tc,
+                    cursor: isMtch ? "default" : "pointer",
+                    opacity: isMtch ? 0.45 : 1,
+                    transform: isSel && !isMtch ? "scale(1.03)" : "scale(1)",
+                    transition: "all 0.15s", boxShadow: isSel ? shadow.sm : "none",
+                  }}>{item.text}</button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ========== RESULTS ==========
+  if (screen === "results") {
+    const correct = sessionResults.filter(r => r.quality >= 3).length;
+    const total = sessionResults.length || 1;
+    const pct = Math.round((correct / total) * 100);
+
+    return wrap(
+      <div style={{ padding: "44px 20px", maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
+        <div style={{
+          width: 80, height: 80, borderRadius: 24, background: pct >= 70 ? C.successBg : pct >= 40 ? C.warningBg : C.dangerBg,
+          display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20,
+        }}>
+          <span style={{ fontSize: 40 }}>{pct >= 80 ? "🎉" : pct >= 50 ? "💪" : "📚"}</span>
+        </div>
+        <h2 style={{ fontSize: 24, fontWeight: 800, margin: "0 0 6px", color: C.primary }}>
+          {pct >= 80 ? "Μπράβο!" : pct >= 50 ? "Καλή δουλειά!" : "Συνέχισε!"}
+        </h2>
+        <p style={{ color: C.textMuted, fontSize: 14, margin: "0 0 32px", fontWeight: 500 }}>
+          {pct >= 80 ? "Отличный результат!" : pct >= 50 ? "Хорошо, продолжай!" : "Повтори для закрепления"}
+        </p>
+
+        <div style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: 130, height: 130, borderRadius: "50%",
+          background: `conic-gradient(${pct >= 70 ? C.success : pct >= 40 ? C.warning : C.danger} ${pct}%, ${C.border} 0%)`,
+          marginBottom: 32,
+        }}>
+          <div style={{
+            width: 108, height: 108, borderRadius: "50%", background: C.bg,
+            display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column",
+          }}>
+            <div style={{ fontSize: 32, fontWeight: 800, color: C.primary }}>{pct}%</div>
+            <div style={{ fontSize: 11, color: C.textMuted, fontWeight: 600 }}>{correct}/{total}</div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
+          <div style={{ flex: 1, padding: "16px", background: C.surface, borderRadius: 16, boxShadow: shadow.sm }}>
+            <div style={{ fontSize: 24, fontWeight: 800, color: C.success }}>{correct}</div>
+            <div style={{ fontSize: 11, color: C.textMuted, fontWeight: 600 }}>Правильно</div>
+          </div>
+          <div style={{ flex: 1, padding: "16px", background: C.surface, borderRadius: 16, boxShadow: shadow.sm }}>
+            <div style={{ fontSize: 24, fontWeight: 800, color: C.danger }}>{total - correct}</div>
+            <div style={{ fontSize: 11, color: C.textMuted, fontWeight: 600 }}>Ошибки</div>
+          </div>
+        </div>
+
+        {sessionResults.length > 0 && (
+          <div style={{ textAlign: "left", marginBottom: 28 }}>
+            <h3 style={{ fontSize: 11, fontWeight: 800, color: C.textMuted, marginBottom: 8, letterSpacing: 1.5, textTransform: "uppercase" }}>Результаты</h3>
+            {sessionResults.map((r, i) => (
+              <div key={i} style={{
+                padding: "11px 16px", borderRadius: 10, marginBottom: 3, background: C.surface,
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                borderLeft: `3px solid ${r.quality >= 3 ? C.success : C.danger}`,
+              }}>
+                <span style={{ fontWeight: 700, color: C.primary, fontSize: 14 }}>{r.word.gr}</span>
+                <span style={{ color: C.textSecondary, fontSize: 13 }}>{r.word.ru}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={goHome} style={{
+            flex: 1, padding: "15px", borderRadius: 14, background: C.surface,
+            border: "none", color: C.text, fontSize: 14, fontWeight: 700,
+            cursor: "pointer", boxShadow: shadow.sm,
+          }}>На главную</button>
+          <button onClick={() => startSession(selectedLevel, selectedTopic, exerciseMode)} style={{
+            flex: 1, padding: "15px", borderRadius: 14, background: C.primary,
+            border: "none", color: C.white, fontSize: 14, fontWeight: 700,
+            cursor: "pointer", boxShadow: shadow.md,
+          }}>Ещё раз</button>
+        </div>
+      </div>
+    );
+  }
+
+  return wrap(
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <button onClick={goHome} style={{ padding: "16px 32px", borderRadius: 14, background: C.primary, border: "none", color: C.white, fontSize: 16, fontWeight: 700, cursor: "pointer" }}>На главную</button>
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
