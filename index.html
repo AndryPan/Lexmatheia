@@ -919,17 +919,13 @@ const IconBtn = ({ onClick, children }) => (
 // --- Storage helpers ---
 const saveUserData = async (username, cardStates) => {
   try {
-    if (window.storage) {
-      await window.storage.set(`user:${username}`, JSON.stringify(cardStates), true);
-    }
+    localStorage.setItem(`lexmatheia:${username}`, JSON.stringify(cardStates));
   } catch(e) { console.error("Save failed", e); }
 };
 const loadUserData = async (username) => {
   try {
-    if (window.storage) {
-      const result = await window.storage.get(`user:${username}`, true);
-      return result ? JSON.parse(result.value) : {};
-    }
+    const data = localStorage.getItem(`lexmatheia:${username}`);
+    return data ? JSON.parse(data) : {};
   } catch(e) { console.error("Load failed", e); }
   return {};
 };
