@@ -746,6 +746,286 @@ const TOPIC_ICONS = {
   "Полезные слова": "📚",
 };
 
+const VERB_DATABASE = {
+  packs: [
+    {
+      id: "everyday", title: "Καθημερινές πράξεις", titleRu: "Повседневные действия", emoji: "☀️",
+      verbs: [
+        { gr: "ξυπνάω", ru: "просыпаться", past: "ξύπνησα", example: "Κάθε μέρα ___ στις 7 το πρωί.", exampleRu: "Каждый день ___ в 7 утра.", answer: "ξυπνάω", distractors: ["κοιμάμαι", "τρώω", "φεύγω"], antonym: "κοιμάμαι", group: "routine" },
+        { gr: "κοιμάμαι", ru: "спать", past: "κοιμήθηκα", example: "Το βράδυ ___ νωρίς.", exampleRu: "Вечером ___ рано.", answer: "κοιμάμαι", distractors: ["ξυπνάω", "τρέχω", "μιλάω"], antonym: "ξυπνάω", group: "routine" },
+        { gr: "τρώω", ru: "есть", past: "έφαγα", example: "Το πρωί ___ πρωινό.", exampleRu: "Утром ___ завтрак.", answer: "τρώω", distractors: ["πίνω", "μαγειρεύω", "πληρώνω"], antonym: "", group: "routine" },
+        { gr: "πίνω", ru: "пить", past: "ήπια", example: "___ καφέ κάθε πρωί.", exampleRu: "___ кофе каждое утро.", answer: "πίνω", distractors: ["τρώω", "αγοράζω", "μαγειρεύω"], antonym: "", group: "routine" },
+        { gr: "ντύνομαι", ru: "одеваться", past: "ντύθηκα", example: "___ γρήγορα και φεύγω.", exampleRu: "___ быстро и ухожу.", answer: "ντύνομαι", distractors: ["πλένομαι", "κοιμάμαι", "ξυπνάω"], antonym: "γδύνομαι", group: "routine" },
+        { gr: "πλένομαι", ru: "мыться/умываться", past: "πλύθηκα", example: "Κάθε πρωί ___ με κρύο νερό.", exampleRu: "Каждое утро ___ холодной водой.", answer: "πλένομαι", distractors: ["ντύνομαι", "τρώω", "βλέπω"], antonym: "", group: "routine" },
+        { gr: "μαγειρεύω", ru: "готовить", past: "μαγείρεψα", example: "Σήμερα ___ μουσακά.", exampleRu: "Сегодня ___ мусаку.", answer: "μαγειρεύω", distractors: ["τρώω", "πληρώνω", "καθαρίζω"], antonym: "", group: "routine" },
+        { gr: "καθαρίζω", ru: "чистить/убирать", past: "καθάρισα", example: "Κάθε Σάββατο ___ το σπίτι.", exampleRu: "Каждую субботу ___ дом.", answer: "καθαρίζω", distractors: ["μαγειρεύω", "πλένομαι", "ανοίγω"], antonym: "λερώνω", group: "routine" },
+        { gr: "ξεκουράζομαι", ru: "отдыхать", past: "ξεκουράστηκα", example: "Μετά τη δουλειά ___ λίγο.", exampleRu: "После работы ___ немного.", answer: "ξεκουράζομαι", distractors: ["δουλεύω", "τρέχω", "φεύγω"], antonym: "κουράζομαι", group: "routine" },
+        { gr: "διαβάζω", ru: "читать/учить", past: "διάβασα", example: "___ ένα βιβλίο κάθε μήνα.", exampleRu: "___ одну книгу каждый месяц.", answer: "διαβάζω", distractors: ["γράφω", "ακούω", "βλέπω"], antonym: "", group: "info" },
+        { gr: "γράφω", ru: "писать", past: "έγραψα", example: "___ ένα email στον φίλο μου.", exampleRu: "___ email моему другу.", answer: "γράφω", distractors: ["διαβάζω", "στέλνω", "λαμβάνω"], antonym: "", group: "info" },
+        { gr: "ακούω", ru: "слушать", past: "άκουσα", example: "___ μουσική στο αυτοκίνητο.", exampleRu: "___ музыку в машине.", answer: "ακούω", distractors: ["βλέπω", "μιλάω", "γράφω"], antonym: "", group: "info" },
+        { gr: "βλέπω", ru: "смотреть/видеть", past: "είδα", example: "Το βράδυ ___ ταινία.", exampleRu: "Вечером ___ фильм.", answer: "βλέπω", distractors: ["ακούω", "διαβάζω", "παρακολουθώ"], antonym: "", group: "info" },
+        { gr: "παρακολουθώ", ru: "следить/смотреть(передачу)", past: "παρακολούθησα", example: "___ τις ειδήσεις κάθε βράδυ.", exampleRu: "___ новости каждый вечер.", answer: "παρακολουθώ", distractors: ["βλέπω", "ακούω", "διαβάζω"], antonym: "", group: "info" },
+        { gr: "τηλεφωνώ", ru: "звонить", past: "τηλεφώνησα", example: "___ στη μητέρα μου κάθε μέρα.", exampleRu: "___ маме каждый день.", answer: "τηλεφωνώ", distractors: ["στέλνω", "γράφω", "μιλάω"], antonym: "", group: "info" },
+        { gr: "στέλνω", ru: "отправлять", past: "έστειλα", example: "___ ένα μήνυμα στον φίλο μου.", exampleRu: "___ сообщение другу.", answer: "στέλνω", distractors: ["λαμβάνω", "γράφω", "τηλεφωνώ"], antonym: "λαμβάνω", group: "info" },
+        { gr: "λαμβάνω", ru: "получать", past: "έλαβα", example: "___ πολλά email κάθε μέρα.", exampleRu: "___ много email каждый день.", answer: "λαμβάνω", distractors: ["στέλνω", "γράφω", "πληρώνω"], antonym: "στέλνω", group: "info" },
+        { gr: "πληρώνω", ru: "платить", past: "πλήρωσα", example: "___ τον λογαριασμό στο εστιατόριο.", exampleRu: "___ счёт в ресторане.", answer: "πληρώνω", distractors: ["αγοράζω", "λαμβάνω", "ψωνίζω"], antonym: "", group: "shopping" },
+        { gr: "αγοράζω", ru: "покупать", past: "αγόρασα", example: "___ φρούτα από τη λαϊκή.", exampleRu: "___ фрукты на рынке.", answer: "αγοράζω", distractors: ["πληρώνω", "πουλάω", "ψωνίζω"], antonym: "πουλάω", group: "shopping" },
+        { gr: "ψωνίζω", ru: "делать покупки", past: "ψώνισα", example: "Κάθε Σάββατο ___ στο σούπερ μάρκετ.", exampleRu: "Каждую субботу ___ в супермаркете.", answer: "ψωνίζω", distractors: ["αγοράζω", "πληρώνω", "μαγειρεύω"], antonym: "", group: "shopping" },
+      ]
+    },
+    {
+      id: "movement", title: "Κίνηση & τόπος", titleRu: "Движение и место", emoji: "🚶",
+      verbs: [
+        { gr: "πάω", ru: "идти/ехать", past: "πήγα", example: "___ στη δουλειά με λεωφορείο.", exampleRu: "___ на работу на автобусе.", answer: "πάω", distractors: ["έρχομαι", "φεύγω", "μένω"], antonym: "έρχομαι", group: "direction" },
+        { gr: "έρχομαι", ru: "приходить", past: "ήρθα", example: "Ο Νίκος ___ στο σπίτι μου αύριο.", exampleRu: "Никос ___ ко мне домой завтра.", answer: "έρχομαι", distractors: ["πάω", "φεύγω", "γυρίζω"], antonym: "πάω", group: "direction" },
+        { gr: "φεύγω", ru: "уходить/уезжать", past: "έφυγα", example: "___ από τη δουλειά στις 6.", exampleRu: "___ с работы в 6.", answer: "φεύγω", distractors: ["έρχομαι", "φτάνω", "μπαίνω"], antonym: "έρχομαι", group: "direction" },
+        { gr: "φτάνω", ru: "прибывать", past: "έφτασα", example: "Το λεωφορείο ___ στις 8.", exampleRu: "Автобус ___ в 8.", answer: "φτάνω", distractors: ["φεύγω", "πάω", "περνάω"], antonym: "φεύγω", group: "direction" },
+        { gr: "γυρίζω", ru: "возвращаться", past: "γύρισα", example: "___ σπίτι μετά τις 7.", exampleRu: "___ домой после 7.", answer: "γυρίζω", distractors: ["πάω", "φεύγω", "μπαίνω"], antonym: "", group: "direction" },
+        { gr: "μένω", ru: "жить/оставаться", past: "έμεινα", example: "___ στη Λευκωσία.", exampleRu: "___ в Никосии.", answer: "μένω", distractors: ["πάω", "φεύγω", "ταξιδεύω"], antonym: "φεύγω", group: "place" },
+        { gr: "μπαίνω", ru: "входить", past: "μπήκα", example: "___ στο κατάστημα.", exampleRu: "___ в магазин.", answer: "μπαίνω", distractors: ["βγαίνω", "φεύγω", "περνάω"], antonym: "βγαίνω", group: "place" },
+        { gr: "βγαίνω", ru: "выходить", past: "βγήκα", example: "___ από το σπίτι στις 8.", exampleRu: "___ из дома в 8.", answer: "βγαίνω", distractors: ["μπαίνω", "φεύγω", "γυρίζω"], antonym: "μπαίνω", group: "place" },
+        { gr: "ανεβαίνω", ru: "подниматься", past: "ανέβηκα", example: "___ τις σκάλες.", exampleRu: "___ по лестнице.", answer: "ανεβαίνω", distractors: ["κατεβαίνω", "μπαίνω", "περνάω"], antonym: "κατεβαίνω", group: "place" },
+        { gr: "κατεβαίνω", ru: "спускаться", past: "κατέβηκα", example: "___ από το βουνό.", exampleRu: "___ с горы.", answer: "κατεβαίνω", distractors: ["ανεβαίνω", "βγαίνω", "φτάνω"], antonym: "ανεβαίνω", group: "place" },
+        { gr: "περνάω", ru: "проходить", past: "πέρασα", example: "___ από το πάρκο κάθε πρωί.", exampleRu: "___ через парк каждое утро.", answer: "περνάω", distractors: ["πάω", "σταματάω", "φτάνω"], antonym: "σταματάω", group: "motion" },
+        { gr: "σταματάω", ru: "останавливаться", past: "σταμάτησα", example: "Το λεωφορείο ___ στη στάση.", exampleRu: "Автобус ___ на остановке.", answer: "σταματάω", distractors: ["συνεχίζω", "περνάω", "φεύγω"], antonym: "συνεχίζω", group: "motion" },
+        { gr: "συνεχίζω", ru: "продолжать", past: "συνέχισα", example: "___ ευθεία στον δρόμο.", exampleRu: "___ прямо по дороге.", answer: "συνεχίζω", distractors: ["σταματάω", "γυρίζω", "φτάνω"], antonym: "σταματάω", group: "motion" },
+        { gr: "ακολουθώ", ru: "следовать", past: "ακολούθησα", example: "___ τον χάρτη.", exampleRu: "___ по карте.", answer: "ακολουθώ", distractors: ["οδηγώ", "χάνομαι", "περνάω"], antonym: "", group: "motion" },
+        { gr: "οδηγώ", ru: "водить(машину)", past: "οδήγησα", example: "___ αυτοκίνητο κάθε μέρα.", exampleRu: "___ машину каждый день.", answer: "οδηγώ", distractors: ["ταξιδεύω", "πάω", "ακολουθώ"], antonym: "", group: "motion" },
+        { gr: "ταξιδεύω", ru: "путешествовать", past: "ταξίδεψα", example: "Μου αρέσει να ___ στην Ελλάδα.", exampleRu: "Мне нравится ___ в Грецию.", answer: "ταξιδεύω", distractors: ["μένω", "οδηγώ", "πάω"], antonym: "", group: "travel" },
+        { gr: "επισκέπτομαι", ru: "посещать", past: "επισκέφτηκα", example: "___ τη γιαγιά μου κάθε Κυριακή.", exampleRu: "___ бабушку каждое воскресенье.", answer: "επισκέπτομαι", distractors: ["ταξιδεύω", "πάω", "συναντάω"], antonym: "", group: "travel" },
+        { gr: "συναντάω", ru: "встречать", past: "συνάντησα", example: "___ τους φίλους μου στο καφέ.", exampleRu: "___ друзей в кафе.", answer: "συναντάω", distractors: ["επισκέπτομαι", "βλέπω", "περιμένω"], antonym: "", group: "travel" },
+        { gr: "περιμένω", ru: "ждать", past: "περίμενα", example: "___ το λεωφορείο στη στάση.", exampleRu: "___ автобус на остановке.", answer: "περιμένω", distractors: ["φεύγω", "φτάνω", "πάω"], antonym: "", group: "travel" },
+        { gr: "χάνομαι", ru: "теряться", past: "χάθηκα", example: "___ στην πόλη χωρίς χάρτη.", exampleRu: "___ в городе без карты.", answer: "χάνομαι", distractors: ["βρίσκω", "ακολουθώ", "φτάνω"], antonym: "βρίσκω", group: "travel" },
+      ]
+    },
+    {
+      id: "communication", title: "Επικοινωνία & συναισθήματα", titleRu: "Общение и эмоции", emoji: "💬",
+      verbs: [
+        { gr: "λέω", ru: "говорить/сказать", past: "είπα", example: "Τι ___ ο δάσκαλος;", exampleRu: "Что ___ учитель?", answer: "λέω", distractors: ["μιλάω", "ρωτάω", "ακούω"], antonym: "", group: "speech" },
+        { gr: "μιλάω", ru: "разговаривать", past: "μίλησα", example: "___ ελληνικά κάθε μέρα.", exampleRu: "___ по-гречески каждый день.", answer: "μιλάω", distractors: ["λέω", "γράφω", "ακούω"], antonym: "σωπαίνω", group: "speech" },
+        { gr: "ρωτάω", ru: "спрашивать", past: "ρώτησα", example: "___ τον γιατρό για την υγεία μου.", exampleRu: "___ врача о моём здоровье.", answer: "ρωτάω", distractors: ["απαντάω", "λέω", "εξηγώ"], antonym: "απαντάω", group: "speech" },
+        { gr: "απαντάω", ru: "отвечать", past: "απάντησα", example: "___ στην ερώτηση του καθηγητή.", exampleRu: "___ на вопрос преподавателя.", answer: "απαντάω", distractors: ["ρωτάω", "λέω", "μιλάω"], antonym: "ρωτάω", group: "speech" },
+        { gr: "εξηγώ", ru: "объяснять", past: "εξήγησα", example: "Ο δάσκαλος ___ τη γραμματική.", exampleRu: "Учитель ___ грамматику.", answer: "εξηγώ", distractors: ["καταλαβαίνω", "ρωτάω", "μιλάω"], antonym: "", group: "speech" },
+        { gr: "καταλαβαίνω", ru: "понимать", past: "κατάλαβα", example: "Δεν ___ τι λέει.", exampleRu: "Не ___ что он говорит.", answer: "καταλαβαίνω", distractors: ["ξέρω", "ξεχνάω", "θυμάμαι"], antonym: "", group: "mind" },
+        { gr: "θυμάμαι", ru: "помнить", past: "θυμήθηκα", example: "Δεν ___ το όνομά του.", exampleRu: "Не ___ его имя.", answer: "θυμάμαι", distractors: ["ξεχνάω", "ξέρω", "σκέφτομαι"], antonym: "ξεχνάω", group: "mind" },
+        { gr: "ξεχνάω", ru: "забывать", past: "ξέχασα", example: "Πάντα ___ τα κλειδιά μου.", exampleRu: "Всегда ___ свои ключи.", answer: "ξεχνάω", distractors: ["θυμάμαι", "χάνω", "βρίσκω"], antonym: "θυμάμαι", group: "mind" },
+        { gr: "νιώθω", ru: "чувствовать", past: "ένιωσα", example: "___ χαρούμενος σήμερα.", exampleRu: "___ радостным сегодня.", answer: "νιώθω", distractors: ["σκέφτομαι", "αγαπάω", "φοβάμαι"], antonym: "", group: "emotion" },
+        { gr: "αγαπάω", ru: "любить", past: "αγάπησα", example: "___ την οικογένειά μου.", exampleRu: "___ свою семью.", answer: "αγαπάω", distractors: ["νιώθω", "χαίρομαι", "λυπάμαι"], antonym: "μισώ", group: "emotion" },
+        { gr: "χαίρομαι", ru: "радоваться", past: "χάρηκα", example: "___ που σε βλέπω!", exampleRu: "___ тебя видеть!", answer: "χαίρομαι", distractors: ["λυπάμαι", "αγαπάω", "φοβάμαι"], antonym: "λυπάμαι", group: "emotion" },
+        { gr: "λυπάμαι", ru: "грустить/жалеть", past: "λυπήθηκα", example: "___ για αυτό που έγινε.", exampleRu: "___ о том что случилось.", answer: "λυπάμαι", distractors: ["χαίρομαι", "φοβάμαι", "ανησυχώ"], antonym: "χαίρομαι", group: "emotion" },
+        { gr: "φοβάμαι", ru: "бояться", past: "φοβήθηκα", example: "___ τα σκοτεινά.", exampleRu: "___ темноты.", answer: "φοβάμαι", distractors: ["ανησυχώ", "λυπάμαι", "νιώθω"], antonym: "", group: "emotion" },
+        { gr: "ανησυχώ", ru: "беспокоиться", past: "ανησύχησα", example: "___ για τις εξετάσεις.", exampleRu: "___ из-за экзаменов.", answer: "ανησυχώ", distractors: ["φοβάμαι", "σκέφτομαι", "λυπάμαι"], antonym: "", group: "emotion" },
+        { gr: "συμφωνώ", ru: "соглашаться", past: "συμφώνησα", example: "___ με την πρότασή σου.", exampleRu: "___ с твоим предложением.", answer: "συμφωνώ", distractors: ["διαφωνώ", "αποφασίζω", "προτείνω"], antonym: "διαφωνώ", group: "opinion" },
+        { gr: "διαφωνώ", ru: "не соглашаться", past: "διαφώνησα", example: "___ με αυτή την ιδέα.", exampleRu: "___ с этой идеей.", answer: "διαφωνώ", distractors: ["συμφωνώ", "προτείνω", "σκέφτομαι"], antonym: "συμφωνώ", group: "opinion" },
+        { gr: "προτείνω", ru: "предлагать", past: "πρότεινα", example: "___ να πάμε στο σινεμά.", exampleRu: "___ пойти в кино.", answer: "προτείνω", distractors: ["αποφασίζω", "συμφωνώ", "θέλω"], antonym: "", group: "opinion" },
+        { gr: "αποφασίζω", ru: "решать", past: "αποφάσισα", example: "___ να μάθω ελληνικά.", exampleRu: "___ учить греческий.", answer: "αποφασίζω", distractors: ["σκέφτομαι", "προτείνω", "θέλω"], antonym: "", group: "opinion" },
+        { gr: "σκέφτομαι", ru: "думать", past: "σκέφτηκα", example: "___ τι να κάνω αύριο.", exampleRu: "___ что делать завтра.", answer: "σκέφτομαι", distractors: ["ξέρω", "θυμάμαι", "καταλαβαίνω"], antonym: "", group: "mind" },
+        { gr: "ξέρω", ru: "знать", past: "ήξερα", example: "___ πού είναι το ταχυδρομείο.", exampleRu: "___ где почта.", answer: "ξέρω", distractors: ["καταλαβαίνω", "θυμάμαι", "μαθαίνω"], antonym: "αγνοώ", group: "mind" },
+      ]
+    },
+    {
+      id: "work", title: "Εργασία & υπηρεσίες", titleRu: "Работа и услуги", emoji: "💼",
+      verbs: [
+        { gr: "δουλεύω", ru: "работать", past: "δούλεψα", example: "___ σε εταιρεία IT.", exampleRu: "___ в IT-компании.", answer: "δουλεύω", distractors: ["ξεκουράζομαι", "τελειώνω", "ξεκινάω"], antonym: "ξεκουράζομαι", group: "work" },
+        { gr: "εργάζομαι", ru: "трудиться", past: "εργάστηκα", example: "___ από τις 9 ως τις 5.", exampleRu: "___ с 9 до 5.", answer: "εργάζομαι", distractors: ["δουλεύω", "ξεκινάω", "τελειώνω"], antonym: "", group: "work" },
+        { gr: "ξεκινάω", ru: "начинать", past: "ξεκίνησα", example: "___ τη δουλειά στις 9.", exampleRu: "___ работу в 9.", answer: "ξεκινάω", distractors: ["τελειώνω", "συνεχίζω", "σταματάω"], antonym: "τελειώνω", group: "work" },
+        { gr: "τελειώνω", ru: "заканчивать", past: "τελείωσα", example: "___ τη δουλειά στις 6.", exampleRu: "___ работу в 6.", answer: "τελειώνω", distractors: ["ξεκινάω", "συνεχίζω", "δουλεύω"], antonym: "ξεκινάω", group: "work" },
+        { gr: "βοηθάω", ru: "помогать", past: "βοήθησα", example: "___ τον συνάδελφό μου.", exampleRu: "___ коллеге.", answer: "βοηθάω", distractors: ["ζητάω", "φροντίζω", "χρειάζομαι"], antonym: "", group: "work" },
+        { gr: "φτιάχνω", ru: "делать/чинить", past: "έφτιαξα", example: "___ τον υπολογιστή.", exampleRu: "___ компьютер.", answer: "φτιάχνω", distractors: ["χαλάω", "βοηθάω", "οργανώνω"], antonym: "χαλάω", group: "work" },
+        { gr: "φροντίζω", ru: "заботиться", past: "φρόντισα", example: "___ τα παιδιά μου.", exampleRu: "___ о моих детях.", answer: "φροντίζω", distractors: ["βοηθάω", "οργανώνω", "ξεκινάω"], antonym: "", group: "care" },
+        { gr: "οργανώνω", ru: "организовывать", past: "οργάνωσα", example: "___ ένα πάρτι γενεθλίων.", exampleRu: "___ вечеринку на день рождения.", answer: "οργανώνω", distractors: ["προγραμματίζω", "ακυρώνω", "φτιάχνω"], antonym: "", group: "plan" },
+        { gr: "προγραμματίζω", ru: "планировать", past: "προγραμμάτισα", example: "___ το ταξίδι μας.", exampleRu: "___ наше путешествие.", answer: "προγραμματίζω", distractors: ["οργανώνω", "αποφασίζω", "ακυρώνω"], antonym: "ακυρώνω", group: "plan" },
+        { gr: "ακυρώνω", ru: "отменять", past: "ακύρωσα", example: "___ το ραντεβού.", exampleRu: "___ встречу.", answer: "ακυρώνω", distractors: ["κλείνω", "προγραμματίζω", "οργανώνω"], antonym: "κλείνω", group: "plan" },
+        { gr: "κλείνω", ru: "бронировать/закрывать", past: "έκλεισα", example: "___ ραντεβού στον γιατρό.", exampleRu: "___ приём к врачу.", answer: "κλείνω", distractors: ["ακυρώνω", "ανοίγω", "τηλεφωνώ"], antonym: "ακυρώνω", group: "plan" },
+        { gr: "συμπληρώνω", ru: "заполнять", past: "συμπλήρωσα", example: "___ τη φόρμα αίτησης.", exampleRu: "___ форму заявления.", answer: "συμπληρώνω", distractors: ["υπογράφω", "γράφω", "διαβάζω"], antonym: "", group: "docs" },
+        { gr: "υπογράφω", ru: "подписывать", past: "υπέγραψα", example: "___ τη σύμβαση.", exampleRu: "___ контракт.", answer: "υπογράφω", distractors: ["συμπληρώνω", "γράφω", "στέλνω"], antonym: "", group: "docs" },
+        { gr: "παραδίδω", ru: "сдавать/доставлять", past: "παρέδωσα", example: "___ την εργασία μου.", exampleRu: "___ свою работу.", answer: "παραδίδω", distractors: ["λαμβάνω", "στέλνω", "ζητάω"], antonym: "λαμβάνω", group: "docs" },
+        { gr: "ζητάω", ru: "просить/искать", past: "ζήτησα", example: "___ βοήθεια από τον φίλο μου.", exampleRu: "___ помощь у друга.", answer: "ζητάω", distractors: ["βοηθάω", "χρειάζομαι", "δίνω"], antonym: "δίνω", group: "request" },
+        { gr: "χρειάζομαι", ru: "нуждаться", past: "χρειάστηκα", example: "___ βοήθεια με τα ελληνικά.", exampleRu: "___ помощь с греческим.", answer: "χρειάζομαι", distractors: ["θέλω", "ζητάω", "μπορώ"], antonym: "", group: "request" },
+        { gr: "πρέπει", ru: "должен/нужно", past: "έπρεπε", example: "___ να πάω στον γιατρό.", exampleRu: "___ пойти к врачу.", answer: "πρέπει", distractors: ["μπορώ", "θέλω", "χρειάζομαι"], antonym: "", group: "modal" },
+        { gr: "μπορώ", ru: "мочь", past: "μπόρεσα", example: "___ να μιλάω ελληνικά.", exampleRu: "___ говорить по-гречески.", answer: "μπορώ", distractors: ["πρέπει", "θέλω", "ξέρω"], antonym: "", group: "modal" },
+        { gr: "θέλω", ru: "хотеть", past: "ήθελα", example: "___ ένα ποτήρι νερό.", exampleRu: "___ стакан воды.", answer: "θέλω", distractors: ["μπορώ", "πρέπει", "χρειάζομαι"], antonym: "", group: "modal" },
+        { gr: "μαθαίνω", ru: "учить/узнавать", past: "έμαθα", example: "___ ελληνικά εδώ και ένα χρόνο.", exampleRu: "___ греческий уже год.", answer: "μαθαίνω", distractors: ["διδάσκω", "ξέρω", "διαβάζω"], antonym: "διδάσκω", group: "work" },
+      ]
+    },
+    {
+      id: "exam", title: "Εξεταστικά ρήματα", titleRu: "Экзаменационные", emoji: "📝",
+      verbs: [
+        { gr: "περιγράφω", ru: "описывать", past: "περιέγραψα", example: "___ την εικόνα.", exampleRu: "___ картинку.", answer: "περιγράφω", distractors: ["αναφέρω", "εξηγώ", "λέω"], antonym: "", group: "describe" },
+        { gr: "αναφέρω", ru: "упоминать", past: "ανέφερα", example: "___ ένα σημαντικό θέμα.", exampleRu: "___ важную тему.", answer: "αναφέρω", distractors: ["περιγράφω", "εκφράζω", "λέω"], antonym: "", group: "describe" },
+        { gr: "εκφράζω", ru: "выражать", past: "εξέφρασα", example: "___ τη γνώμη μου.", exampleRu: "___ своё мнение.", answer: "εκφράζω", distractors: ["αναφέρω", "παρουσιάζω", "λέω"], antonym: "", group: "describe" },
+        { gr: "επικοινωνώ", ru: "общаться", past: "επικοινώνησα", example: "___ με email.", exampleRu: "___ по email.", answer: "επικοινωνώ", distractors: ["μιλάω", "γράφω", "στέλνω"], antonym: "", group: "describe" },
+        { gr: "παρουσιάζω", ru: "представлять", past: "παρουσίασα", example: "___ το σχέδιό μου.", exampleRu: "___ свой план.", answer: "παρουσιάζω", distractors: ["εκφράζω", "περιγράφω", "εξηγώ"], antonym: "", group: "describe" },
+        { gr: "συγκρίνω", ru: "сравнивать", past: "σύγκρινα", example: "___ δύο εστιατόρια.", exampleRu: "___ два ресторана.", answer: "συγκρίνω", distractors: ["επιλέγω", "προτιμάω", "αποφασίζω"], antonym: "", group: "evaluate" },
+        { gr: "επιλέγω", ru: "выбирать", past: "επέλεξα", example: "___ το καλύτερο εστιατόριο.", exampleRu: "___ лучший ресторан.", answer: "επιλέγω", distractors: ["συγκρίνω", "προτιμάω", "αποφεύγω"], antonym: "αποφεύγω", group: "evaluate" },
+        { gr: "προτιμάω", ru: "предпочитать", past: "προτίμησα", example: "___ τον καφέ χωρίς ζάχαρη.", exampleRu: "___ кофе без сахара.", answer: "προτιμάω", distractors: ["επιλέγω", "θέλω", "αποφεύγω"], antonym: "αποφεύγω", group: "evaluate" },
+        { gr: "αποφεύγω", ru: "избегать", past: "απέφυγα", example: "___ τα γλυκά.", exampleRu: "___ сладкое.", answer: "αποφεύγω", distractors: ["προτιμάω", "επιλέγω", "θέλω"], antonym: "προτιμάω", group: "evaluate" },
+        { gr: "πιστεύω", ru: "верить", past: "πίστεψα", example: "___ ότι θα τα καταφέρω.", exampleRu: "___ что справлюсь.", answer: "πιστεύω", distractors: ["θεωρώ", "νομίζω", "ξέρω"], antonym: "", group: "think" },
+        { gr: "θεωρώ", ru: "считать/полагать", past: "θεώρησα", example: "___ ότι αυτό είναι σωστό.", exampleRu: "___ что это правильно.", answer: "θεωρώ", distractors: ["πιστεύω", "νομίζω", "υποστηρίζω"], antonym: "", group: "think" },
+        { gr: "υποστηρίζω", ru: "поддерживать", past: "υποστήριξα", example: "___ τη γνώμη του.", exampleRu: "___ его мнение.", answer: "υποστηρίζω", distractors: ["διαφωνώ", "πιστεύω", "αντιμετωπίζω"], antonym: "", group: "think" },
+        { gr: "αντιλαμβάνομαι", ru: "осознавать", past: "αντιλήφθηκα", example: "___ τη σημασία του θέματος.", exampleRu: "___ важность вопроса.", answer: "αντιλαμβάνομαι", distractors: ["καταλαβαίνω", "σκέφτομαι", "θεωρώ"], antonym: "", group: "think" },
+        { gr: "αντιμετωπίζω", ru: "сталкиваться/решать", past: "αντιμετώπισα", example: "___ ένα πρόβλημα στη δουλειά.", exampleRu: "___ проблему на работе.", answer: "αντιμετωπίζω", distractors: ["αποφεύγω", "βελτιώνω", "αλλάζω"], antonym: "αποφεύγω", group: "action" },
+        { gr: "βελτιώνω", ru: "улучшать", past: "βελτίωσα", example: "___ τα ελληνικά μου.", exampleRu: "___ свой греческий.", answer: "βελτιώνω", distractors: ["αλλάζω", "χειροτερεύω", "μαθαίνω"], antonym: "χειροτερεύω", group: "action" },
+        { gr: "αλλάζω", ru: "менять", past: "άλλαξα", example: "___ δουλειά κάθε 2 χρόνια.", exampleRu: "___ работу каждые 2 года.", answer: "αλλάζω", distractors: ["βελτιώνω", "συνεχίζω", "σταματάω"], antonym: "", group: "action" },
+        { gr: "εξελίσσομαι", ru: "развиваться", past: "εξελίχθηκα", example: "Η τεχνολογία ___ γρήγορα.", exampleRu: "Технологии ___ быстро.", answer: "εξελίσσομαι", distractors: ["αλλάζω", "βελτιώνω", "προσπαθώ"], antonym: "", group: "action" },
+        { gr: "προσπαθώ", ru: "стараться", past: "προσπάθησα", example: "___ να μιλάω μόνο ελληνικά.", exampleRu: "___ говорить только по-гречески.", answer: "προσπαθώ", distractors: ["καταφέρνω", "θέλω", "μπορώ"], antonym: "", group: "action" },
+        { gr: "καταφέρνω", ru: "удаваться/справляться", past: "κατάφερα", example: "___ να περάσω τις εξετάσεις!", exampleRu: "___ сдать экзамены!", answer: "καταφέρνω", distractors: ["προσπαθώ", "αποτυγχάνω", "βελτιώνω"], antonym: "αποτυγχάνω", group: "action" },
+        { gr: "αποτυγχάνω", ru: "терпеть неудачу", past: "απέτυχα", example: "___ στις πρώτες εξετάσεις.", exampleRu: "___ на первых экзаменах.", answer: "αποτυγχάνω", distractors: ["καταφέρνω", "προσπαθώ", "συνεχίζω"], antonym: "καταφέρνω", group: "action" },
+      ]
+    },
+  ]
+};
+
+
+// === EXTENDED GRAMMAR WITH CASE EXAMPLES ===
+const GRAMMAR = {
+  "Артикли": {
+    desc: "В греческом 3 рода. Артикли склоняются по падежам.",
+    headers: ["", "Муж. (ο)", "Жен. (η)", "Ср. (το)"],
+    rows: [
+      ["Им. ед.", "ο", "η", "το"],
+      ["Род. ед.", "του", "της", "του"],
+      ["Вин. ед.", "τον", "την", "το"],
+      ["Им. мн.", "οι", "οι", "τα"],
+      ["Род. мн.", "των", "των", "των"],
+      ["Вин. мн.", "τους", "τις", "τα"],
+    ]
+  },
+  "Именительный (Ονομαστική)": {
+    desc: "Кто? Что? Подлежащее в предложении.",
+    headers: ["Род", "Артикль", "Пример", "Перевод"],
+    rows: [
+      ["Муж.", "ο", "ο φίλος μιλάει", "друг говорит"],
+      ["Жен.", "η", "η μητέρα μαγειρεύει", "мама готовит"],
+      ["Ср.", "το", "το παιδί παίζει", "ребёнок играет"],
+      ["Муж.мн.", "οι", "οι φίλοι μιλάνε", "друзья говорят"],
+      ["Жен.мн.", "οι", "οι μητέρες μαγειρεύουν", "мамы готовят"],
+      ["Ср.мн.", "τα", "τα παιδιά παίζουν", "дети играют"],
+    ]
+  },
+  "Родительный (Γενική)": {
+    desc: "Кого? Чего? Чей? Принадлежность и после предлогов.",
+    headers: ["Род", "Артикль", "Пример", "Перевод"],
+    rows: [
+      ["Муж.", "του", "το βιβλίο του φίλου", "книга друга"],
+      ["Жен.", "της", "το σπίτι της μητέρας", "дом мамы"],
+      ["Ср.", "του", "η πόρτα του σπιτιού", "дверь дома"],
+      ["Муж.мн.", "των", "η παρέα των φίλων", "компания друзей"],
+      ["Жен.мн.", "των", "η δουλειά των μητέρων", "работа мам"],
+      ["Ср.мн.", "των", "ο θόρυβος των παιδιών", "шум детей"],
+    ]
+  },
+  "Винительный (Αιτιατική)": {
+    desc: "Кого? Что? Прямое дополнение. Самый частый после предлогов.",
+    headers: ["Род", "Артикль", "Пример", "Перевод"],
+    rows: [
+      ["Муж.", "τον", "βλέπω τον φίλο", "вижу друга"],
+      ["Жен.", "την", "αγαπάω την μητέρα", "люблю маму"],
+      ["Ср.", "το", "βλέπω το παιδί", "вижу ребёнка"],
+      ["Муж.мн.", "τους", "βλέπω τους φίλους", "вижу друзей"],
+      ["Жен.мн.", "τις", "βλέπω τις μητέρες", "вижу мам"],
+      ["Ср.мн.", "τα", "βλέπω τα παιδιά", "вижу детей"],
+    ]
+  },
+  "Звательный (Κλητική)": {
+    desc: "Обращение. Часто без артикля.",
+    headers: ["Тип", "Им.п.", "Зват.п.", "Пример"],
+    rows: [
+      ["Муж. -ος", "Νίκος", "Νίκο!", "Νίκο, έλα εδώ!"],
+      ["Муж. -ης", "Γιώργης", "Γιώργη!", "Γιώργη, περίμενε!"],
+      ["Муж. -ας", "μπαμπάς", "μπαμπά!", "Μπαμπά, βοήθησέ με!"],
+      ["Жен. -α", "Μαρία", "Μαρία!", "Μαρία, πού είσαι;"],
+      ["Жен. -η", "Ελένη", "Ελένη!", "Ελένη, έλα!"],
+    ]
+  },
+  "Местоимения": {
+    desc: "Личные местоимения в именительном и винительном падеже.",
+    headers: ["Лицо", "Им. п.", "Вин. (сильн.)", "Вин. (слаб.)"],
+    rows: [
+      ["Я", "εγώ", "εμένα", "με"],
+      ["Ты", "εσύ", "εσένα", "σε"],
+      ["Он", "αυτός", "αυτόν", "τον"],
+      ["Она", "αυτή", "αυτήν", "την"],
+      ["Оно", "αυτό", "αυτό", "το"],
+      ["Мы", "εμείς", "εμάς", "μας"],
+      ["Вы", "εσείς", "εσάς", "σας"],
+      ["Они(м)", "αυτοί", "αυτούς", "τους"],
+      ["Они(ж)", "αυτές", "αυτές", "τις"],
+    ]
+  },
+  "Глагол «быть» (είμαι)": {
+    desc: "Настоящее время.",
+    headers: ["Лицо", "Ед. число", "Мн. число"],
+    rows: [["1-е", "είμαι", "είμαστε"], ["2-е", "είσαι", "είστε"], ["3-е", "είναι", "είναι"]]
+  },
+  "Глагол «иметь» (έχω)": {
+    desc: "Настоящее время.",
+    headers: ["Лицо", "Ед. число", "Мн. число"],
+    rows: [["1-е", "έχω", "έχουμε"], ["2-е", "έχεις", "έχετε"], ["3-е", "έχει", "έχουν"]]
+  },
+  "1-е спряжение (-ω)": {
+    desc: "Пример: γράφω (писать).",
+    headers: ["Лицо", "Ед.", "Мн.", "Пример"],
+    rows: [
+      ["1-е", "-ω", "-ουμε", "γράφω / γράφουμε"],
+      ["2-е", "-εις", "-ετε", "γράφεις / γράφετε"],
+      ["3-е", "-ει", "-ουν", "γράφει / γράφουν"],
+    ]
+  },
+  "2-е спряжение (-ώ / -άω)": {
+    desc: "Пример: μιλάω (говорить).",
+    headers: ["Лицо", "Ед.", "Мн.", "Пример"],
+    rows: [
+      ["1-е", "-ώ / -άω", "-ούμε / -άμε", "μιλώ / μιλάμε"],
+      ["2-е", "-είς / -άς", "-είτε / -άτε", "μιλάς / μιλάτε"],
+      ["3-е", "-εί / -ά(ει)", "-ούν(ε)", "μιλάει / μιλούν"],
+    ]
+  },
+  "Сущ. муж. рода": {
+    desc: "Пример: ο φίλος (друг), ο μαθητής (ученик).",
+    headers: ["Тип", "Им. ед.", "Род. ед.", "Вин. ед.", "Им. мн."],
+    rows: [
+      ["-ος", "ο φίλος", "του φίλου", "τον φίλο", "οι φίλοι"],
+      ["-ης", "ο μαθητής", "του μαθητή", "τον μαθητή", "οι μαθητές"],
+      ["-ας", "ο μπαμπάς", "του μπαμπά", "τον μπαμπά", "οι μπαμπάδες"],
+    ]
+  },
+  "Сущ. жен. рода": {
+    desc: "Пример: η μητέρα (мать), η ζωή (жизнь).",
+    headers: ["Тип", "Им. ед.", "Род. ед.", "Вин. ед.", "Им. мн."],
+    rows: [
+      ["-α", "η μητέρα", "της μητέρας", "τη μητέρα", "οι μητέρες"],
+      ["-η", "η ζωή", "της ζωής", "τη ζωή", "οι ζωές"],
+    ]
+  },
+  "Сущ. ср. рода": {
+    desc: "Пример: το σπίτι (дом), το όνομα (имя).",
+    headers: ["Тип", "Им. ед.", "Род. ед.", "Вин. ед.", "Им. мн."],
+    rows: [
+      ["-ο", "το βιβλίο", "του βιβλίου", "το βιβλίο", "τα βιβλία"],
+      ["-ι", "το σπίτι", "του σπιτιού", "το σπίτι", "τα σπίτια"],
+      ["-μα", "το όνομα", "του ονόματος", "το όνομα", "τα ονόματα"],
+    ]
+  },
+  "Числительные 1-20": {
+    desc: "Базовые числа.",
+    headers: ["#", "Греческий", "#", "Греческий"],
+    rows: [
+      ["1", "ένα", "11", "έντεκα"],
+      ["2", "δύο", "12", "δώδεκα"],
+      ["3", "τρία", "13", "δεκατρία"],
+      ["4", "τέσσερα", "14", "δεκατέσσερα"],
+      ["5", "πέντε", "15", "δεκαπέντε"],
+      ["6", "έξι", "16", "δεκαέξι"],
+      ["7", "εφτά", "17", "δεκαεφτά"],
+      ["8", "οχτώ", "18", "δεκαοχτώ"],
+      ["9", "εννιά", "19", "δεκαεννιά"],
+      ["10", "δέκα", "20", "είκοσι"],
+    ]
+  },
+};
+
+
 // LEXMATHEIA v4 — Full-featured Greek Vocabulary PWA
 // Features: examples, multi-user storage, pronunciation, grammar tables
 
@@ -778,115 +1058,6 @@ const ONBOARDING_WORDS = [
 ];
 
 // --- GRAMMAR DATA ---
-const GRAMMAR = {
-  "Артикли": {
-    desc: "В греческом 3 рода. Артикли меняются по падежам.",
-    headers: ["", "Муж. (ο)", "Жен. (η)", "Ср. (το)"],
-    rows: [
-      ["Им. ед.", "ο", "η", "το"],
-      ["Род. ед.", "του", "της", "του"],
-      ["Вин. ед.", "τον", "την", "το"],
-      ["Им. мн.", "οι", "οι", "τα"],
-      ["Род. мн.", "των", "των", "των"],
-      ["Вин. мн.", "τους", "τις", "τα"],
-    ]
-  },
-  "Местоимения": {
-    desc: "Личные местоимения в именительном и винительном падеже.",
-    headers: ["Лицо", "Им. п.", "Вин. п. (сильн.)", "Вин. п. (слаб.)"],
-    rows: [
-      ["Я", "εγώ", "εμένα", "με"],
-      ["Ты", "εσύ", "εσένα", "σε"],
-      ["Он", "αυτός", "αυτόν", "τον"],
-      ["Она", "αυτή", "αυτήν", "την"],
-      ["Оно", "αυτό", "αυτό", "το"],
-      ["Мы", "εμείς", "εμάς", "μας"],
-      ["Вы", "εσείς", "εσάς", "σας"],
-      ["Они (м)", "αυτοί", "αυτούς", "τους"],
-      ["Они (ж)", "αυτές", "αυτές", "τις"],
-    ]
-  },
-  "Глагол «быть» (είμαι)": {
-    desc: "Самый важный глагол. Настоящее время.",
-    headers: ["Лицо", "Ед. число", "Мн. число"],
-    rows: [
-      ["1-е", "είμαι", "είμαστε"],
-      ["2-е", "είσαι", "είστε / είσαστε"],
-      ["3-е", "είναι", "είναι"],
-    ]
-  },
-  "Глагол «иметь» (έχω)": {
-    desc: "Настоящее время.",
-    headers: ["Лицо", "Ед. число", "Мн. число"],
-    rows: [
-      ["1-е", "έχω", "έχουμε"],
-      ["2-е", "έχεις", "έχετε"],
-      ["3-е", "έχει", "έχουν"],
-    ]
-  },
-  "Глаголы 1-го спряжения (-ω)": {
-    desc: "Основная группа. Пример: γράφω (писать).",
-    headers: ["Лицо", "Ед. число", "Мн. число"],
-    rows: [
-      ["1-е", "-ω", "-ουμε"],
-      ["2-е", "-εις", "-ετε"],
-      ["3-е", "-ει", "-ουν"],
-    ]
-  },
-  "Глаголы 2-го спряжения (-ώ / -άω)": {
-    desc: "Пример: μιλάω / μιλώ (говорить).",
-    headers: ["Лицо", "Ед. число", "Мн. число"],
-    rows: [
-      ["1-е", "-ώ / -άω", "-ούμε / -άμε"],
-      ["2-е", "-είς / -άς", "-είτε / -άτε"],
-      ["3-е", "-εί / -ά(ει)", "-ούν(ε) / -ά(νε)"],
-    ]
-  },
-  "Существительные муж. р.": {
-    desc: "Основные окончания мужского рода.",
-    headers: ["Тип", "Им. ед.", "Род. ед.", "Им. мн.", "Род. мн."],
-    rows: [
-      ["-ος", "-ος", "-ου", "-οι", "-ων"],
-      ["-ης", "-ης", "-η", "-ες", "-ών"],
-      ["-ας", "-ας", "-α", "-ες", "-ών"],
-      ["-έας", "-έας", "-έα", "-είς", "-έων"],
-    ]
-  },
-  "Существительные жен. р.": {
-    desc: "Основные окончания женского рода.",
-    headers: ["Тип", "Им. ед.", "Род. ед.", "Им. мн.", "Род. мн."],
-    rows: [
-      ["-α", "-α", "-ας", "-ες", "-ών"],
-      ["-η", "-η", "-ης", "-ες", "-ών"],
-      ["-ος", "-ος", "-ου", "-οι", "-ων"],
-    ]
-  },
-  "Существительные ср. р.": {
-    desc: "Основные окончания среднего рода.",
-    headers: ["Тип", "Им. ед.", "Род. ед.", "Им. мн.", "Род. мн."],
-    rows: [
-      ["-ο", "-ο", "-ου", "-α", "-ων"],
-      ["-ι", "-ι", "-ιού", "-ιά", "-ιών"],
-      ["-μα", "-μα", "-ματος", "-ματα", "-μάτων"],
-    ]
-  },
-  "Числительные 1-20": {
-    desc: "Базовые числа.",
-    headers: ["Число", "Греческий", "Число", "Греческий"],
-    rows: [
-      ["1", "ένα", "11", "έντεκα"],
-      ["2", "δύο", "12", "δώδεκα"],
-      ["3", "τρία", "13", "δεκατρία"],
-      ["4", "τέσσερα", "14", "δεκατέσσερα"],
-      ["5", "πέντε", "15", "δεκαπέντε"],
-      ["6", "έξι", "16", "δεκαέξι"],
-      ["7", "εφτά", "17", "δεκαεφτά"],
-      ["8", "οχτώ", "18", "δεκαοχτώ"],
-      ["9", "εννιά", "19", "δεκαεννιά"],
-      ["10", "δέκα", "20", "είκοσι"],
-    ]
-  },
-};
 
 // --- Colors ---
 const font = "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif";
@@ -919,12 +1090,12 @@ const IconBtn = ({ onClick, children }) => (
 // --- Storage helpers ---
 const saveUserData = async (username, cardStates) => {
   try {
-    localStorage.setItem(`lexmatheia:${username}`, JSON.stringify(cardStates));
+    localStorage.setItem("lexmatheia:" + username, JSON.stringify(cardStates));
   } catch(e) { console.error("Save failed", e); }
 };
 const loadUserData = async (username) => {
   try {
-    const data = localStorage.getItem(`lexmatheia:${username}`);
+    const data = localStorage.getItem("lexmatheia:" + username);
     return data ? JSON.parse(data) : {};
   } catch(e) { console.error("Load failed", e); }
   return {};
@@ -952,6 +1123,17 @@ function App() {
   const [exerciseMode, setExerciseMode] = useState("flashcards");
   const [wordListFilter, setWordListFilter] = useState("all");
   const [fadeIn, setFadeIn] = useState(true);
+  const [cardDirection, setCardDirection] = useState("gr-ru"); // gr-ru or ru-gr
+  // Verb trainer state
+  const [selectedPack, setSelectedPack] = useState(null);
+  const [verbQueue, setVerbQueue] = useState([]);
+  const [verbRepeatQueue, setVerbRepeatQueue] = useState([]);
+  const [verbCurrent, setVerbCurrent] = useState(null);
+  const [verbOptions, setVerbOptions] = useState([]);
+  const [verbAnswer, setVerbAnswer] = useState(null);
+  const [verbShowWhy, setVerbShowWhy] = useState(false);
+  const [verbResults, setVerbResults] = useState([]);
+  const [verbSessionDone, setVerbSessionDone] = useState(false);
   const [grammarTopic, setGrammarTopic] = useState(null);
   // Speech
   const [isListening, setIsListening] = useState(false);
@@ -1079,6 +1261,94 @@ function App() {
     recognition.start();
   };
 
+
+  // --- Verb Trainer ---
+  const startVerbSession = (pack) => {
+    setSelectedPack(pack);
+    const q = shuffle([...pack.verbs]);
+    setVerbQueue(q.slice(1));
+    setVerbRepeatQueue([]);
+    setVerbResults([]);
+    setVerbSessionDone(false);
+    setVerbAnswer(null);
+    setVerbShowWhy(false);
+    const first = q[0];
+    setVerbCurrent(first);
+    setVerbOptions(shuffle([first.answer, ...first.distractors]));
+    navigateTo("verbExercise");
+  };
+
+  const handleVerbAnswer = (chosen) => {
+    if (verbAnswer !== null) return;
+    const isCorrect = chosen === verbCurrent.answer;
+    setVerbAnswer(chosen);
+    setVerbResults(p => [...p, { verb: verbCurrent, correct: isCorrect }]);
+    // Update cardStates for verb
+    const key = "verb_" + verbCurrent.gr;
+    const prev = cardStates[key] || { correctCount: 0, errorCount: 0, lastSeen: 0 };
+    setCardStates(p => ({ ...p, [key]: {
+      ...prev,
+      correctCount: prev.correctCount + (isCorrect ? 1 : 0),
+      errorCount: prev.errorCount + (isCorrect ? 0 : 1),
+      lastSeen: Date.now(),
+      status: (prev.correctCount + (isCorrect ? 1 : 0)) >= 3 ? "known" : "learning",
+    }}));
+    if (!isCorrect) {
+      setVerbRepeatQueue(p => [...p, verbCurrent]);
+    }
+  };
+
+  const nextVerb = () => {
+    setVerbAnswer(null);
+    setVerbShowWhy(false);
+    let next = null;
+    let newQueue = [...verbQueue];
+    let newRepeat = [...verbRepeatQueue];
+    
+    if (newQueue.length > 0) {
+      // Insert repeat items every 3-4 words
+      if (newRepeat.length > 0 && newQueue.length % 3 === 0) {
+        next = newRepeat.shift();
+        setVerbRepeatQueue(newRepeat);
+      } else {
+        next = newQueue.shift();
+        setVerbQueue(newQueue);
+      }
+    } else if (newRepeat.length > 0) {
+      next = newRepeat.shift();
+      setVerbRepeatQueue(newRepeat);
+    } else {
+      setVerbSessionDone(true);
+      navigateTo("verbResults");
+      return;
+    }
+    
+    setVerbCurrent(next);
+    setVerbOptions(shuffle([next.answer, ...next.distractors]));
+  };
+
+  const retryVerbErrors = () => {
+    const errors = verbResults.filter(r => !r.correct).map(r => r.verb);
+    if (errors.length === 0) return;
+    const q = shuffle(errors);
+    setVerbQueue(q.slice(1));
+    setVerbRepeatQueue([]);
+    setVerbResults([]);
+    setVerbSessionDone(false);
+    setVerbAnswer(null);
+    setVerbShowWhy(false);
+    setVerbCurrent(q[0]);
+    setVerbOptions(shuffle([q[0].answer, ...q[0].distractors]));
+    navigateTo("verbExercise");
+  };
+
+  const getVerbPackProgress = (pack) => {
+    return pack.verbs.filter(v => {
+      const s = cardStates["verb_" + v.gr];
+      return s && s.status === "known";
+    }).length;
+  };
+
   const wrap = (ch) => (
     <div style={{ minHeight: "100vh", background: C.bg, color: C.text, fontFamily: font, opacity: fadeIn ? 1 : 0, transition: "opacity 0.1s ease", WebkitFontSmoothing: "antialiased" }}>{ch}</div>
   );
@@ -1165,14 +1435,30 @@ function App() {
           ))}
         </div>
         
-        {/* Grammar button */}
-        <button onClick={() => navigateTo("grammar")} style={{ width: "100%", padding: "16px", borderRadius: 16, border: "none", background: C.surface, color: C.text, cursor: "pointer", boxShadow: shadow.sm, marginBottom: 24, display: "flex", alignItems: "center", gap: 14 }}>
+        {/* Card direction toggle */}
+        <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+          <button onClick={() => navigateTo("grammar")} style={{ width: "100%", padding: "16px", borderRadius: 16, border: "none", background: C.surface, color: C.text, cursor: "pointer", boxShadow: shadow.sm, marginBottom: 24, display: "flex", alignItems: "center", gap: 14 }}>
           <div style={{ width: 44, height: 44, borderRadius: 14, background: "rgba(139,92,246,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>📖</div>
           <div style={{ textAlign: "left" }}>
             <div style={{ fontSize: 14, fontWeight: 700 }}>Грамматика</div>
             <div style={{ fontSize: 11, color: C.textMuted }}>Таблицы склонений, спряжений, артикли</div>
           </div>
           <div style={{ marginLeft: "auto", color: C.textMuted }}>›</div>
+          </button>
+          <button onClick={() => setCardDirection(d => d === "gr-ru" ? "ru-gr" : "gr-ru")} style={{ minWidth: 80, padding: "16px 14px", borderRadius: 16, border: "none", background: C.surface, cursor: "pointer", boxShadow: shadow.sm, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4 }}>
+            <span style={{ fontSize: 18 }}>{cardDirection === "gr-ru" ? "🇬🇷→🇷🇺" : "🇷🇺→🇬🇷"}</span>
+            <span style={{ fontSize: 10, color: C.textMuted, fontWeight: 600 }}>Карточки</span>
+          </button>
+        </div>
+
+        {/* Verb Trainer */}
+        <button onClick={() => navigateTo("verbMenu")} style={{ width: "100%", padding: "18px", borderRadius: 16, border: "none", background: "linear-gradient(135deg, #1a3a5c 0%, #2d5f8a 100%)", cursor: "pointer", boxShadow: shadow.md, marginBottom: 24, display: "flex", alignItems: "center", gap: 14 }}>
+          <div style={{ width: 44, height: 44, borderRadius: 14, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>▶</div>
+          <div style={{ textAlign: "left" }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>Ρήματα · Глаголы</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>100 глаголов · 5 пачек · Детектив</div>
+          </div>
+          <div style={{ marginLeft: "auto", color: "rgba(255,255,255,0.5)" }}>›</div>
         </button>
 
         {/* Topics */}
@@ -1333,12 +1619,12 @@ function App() {
         <ProgressBar value={currentIndex + 1} max={sessionWords.length} />
         <div onClick={() => setShowTranslation(!showTranslation)} style={{ marginTop: 32, padding: "48px 28px", borderRadius: 24, background: C.surface, cursor: "pointer", textAlign: "center", minHeight: 250, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", boxShadow: shadow.xl }}>
           {!showTranslation ? (<>
-            <div style={{ fontSize: 38, fontWeight: 800, color: C.primary, marginBottom: 16 }}>{currentWord.gr}</div>
+            <div style={{ fontSize: 38, fontWeight: 800, color: C.primary, marginBottom: 16 }}>{cardDirection === "gr-ru" ? currentWord.gr : currentWord.ru}</div>
             <div style={{ fontSize: 13, color: C.textMuted }}>Нажми, чтобы перевернуть</div>
           </>) : (<>
-            <div style={{ fontSize: 30, fontWeight: 800, color: C.primary, marginBottom: 10 }}>{currentWord.gr}</div>
+            <div style={{ fontSize: 30, fontWeight: 800, color: C.primary, marginBottom: 10 }}>{cardDirection === "gr-ru" ? currentWord.gr : currentWord.ru}</div>
             <div style={{ width: 32, height: 2, background: C.border, margin: "0 0 14px", borderRadius: 1 }} />
-            <div style={{ fontSize: 22, fontWeight: 700, color: C.text, marginBottom: 6 }}>{currentWord.ru}</div>
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.text, marginBottom: 6 }}>{cardDirection === "gr-ru" ? currentWord.ru : currentWord.gr}</div>
             {currentWord.ex && <div style={{ fontSize: 13, color: C.textMuted, fontStyle: "italic", padding: "10px 16px", background: C.bg, borderRadius: 12, marginTop: 12, maxWidth: 300, lineHeight: 1.5 }}>{currentWord.ex}</div>}
           </>)}
         </div>
@@ -1537,7 +1823,146 @@ function App() {
     );
   }
 
-  return wrap(<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}><button onClick={goHome} style={{ padding: "16px 32px", borderRadius: 14, background: C.primary, border: "none", color: C.white, fontSize: 16, fontWeight: 700, cursor: "pointer" }}>На главную</button></div>);
+
+  // ============ VERB MENU ============
+  if (screen === "verbMenu") {
+    return wrap(
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+        <button onClick={goHome} style={{ background: "none", border: "none", color: C.textMuted, cursor: "pointer", fontSize: 13, fontWeight: 600, padding: "8px 0", marginBottom: 8 }}>← Назад</button>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 16, background: C.primary, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, color: C.white, boxShadow: shadow.md }}>▶</div>
+          <div><h2 style={{ fontSize: 22, fontWeight: 800, margin: 0, color: C.primary }}>Ρήματα · Глаголы</h2><p style={{ fontSize: 12, color: C.textMuted, margin: "2px 0 0" }}>100 глаголов в контексте</p></div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {VERB_DATABASE.packs.map(pack => {
+            const prog = getVerbPackProgress(pack);
+            const pct = Math.round((prog / pack.verbs.length) * 100);
+            return (
+              <button key={pack.id} onClick={() => startVerbSession(pack)} style={{ padding: "18px", borderRadius: 18, border: "none", background: C.surface, cursor: "pointer", textAlign: "left", boxShadow: shadow.sm, display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{ width: 48, height: 48, borderRadius: 14, background: C.primaryGlow, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>{pack.emoji}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{pack.titleRu}</div>
+                  <div style={{ fontSize: 12, color: C.teal, marginTop: 1 }}>{pack.title}</div>
+                  <div style={{ fontSize: 11, color: C.textMuted, marginTop: 4 }}>{pack.verbs.length} глаголов · {prog} выучено</div>
+                  <div style={{ marginTop: 6 }}><ProgressBar value={prog} max={pack.verbs.length} color={C.teal} height={4} /></div>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: pct > 0 ? C.teal : C.textMuted }}>{pct}%</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ============ VERB EXERCISE (DETECTIVE) ============
+  if (screen === "verbExercise" && verbCurrent) {
+    const totalInPack = selectedPack ? selectedPack.verbs.length : 0;
+    const done = verbResults.length;
+    return wrap(
+      <div style={{ padding: "20px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <IconBtn onClick={() => navigateTo("verbMenu")}>✕</IconBtn>
+          <Badge color={C.primary}>🔍 Детектив</Badge>
+          <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 700 }}>{done + 1}/{totalInPack}</span>
+        </div>
+        <ProgressBar value={done + 1} max={totalInPack} color={C.primary} />
+        {selectedPack && <div style={{ fontSize: 11, color: C.textMuted, textAlign: "center", marginTop: 8, fontWeight: 600 }}>{selectedPack.emoji} {selectedPack.titleRu}</div>}
+
+        {/* Sentence with gap */}
+        <div style={{ background: C.surface, borderRadius: 20, padding: "28px 24px", marginTop: 24, boxShadow: shadow.lg, textAlign: "center" }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: C.primary, lineHeight: 1.6, marginBottom: 10 }}>
+            {verbCurrent.example.split("___").map((part, i, arr) => (
+              <span key={i}>{part}{i < arr.length - 1 && <span style={{ display: "inline-block", width: 80, borderBottom: `3px solid ${verbAnswer ? (verbAnswer === verbCurrent.answer ? C.success : C.danger) : C.accent}`, margin: "0 4px", textAlign: "center", fontWeight: 800, color: verbAnswer === verbCurrent.answer ? C.success : verbAnswer ? C.danger : C.accent }}>{verbAnswer || "___"}</span>}</span>
+            ))}
+          </div>
+          <div style={{ fontSize: 13, color: C.textMuted, fontStyle: "italic" }}>{verbCurrent.exampleRu}</div>
+        </div>
+
+        {/* Options */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 20 }}>
+          {verbOptions.map((opt, i) => {
+            const isCorrect = opt === verbCurrent.answer;
+            const isSelected = verbAnswer === opt;
+            const show = verbAnswer !== null;
+            let bg = C.surface, bc = "transparent", tc = C.text;
+            if (show && isCorrect) { bg = C.successBg; bc = C.success; tc = C.success; }
+            if (show && isSelected && !isCorrect) { bg = C.dangerBg; bc = C.danger; tc = C.danger; }
+            return (
+              <button key={i} onClick={() => handleVerbAnswer(opt)} style={{
+                padding: "16px 12px", borderRadius: 14, background: bg,
+                border: `2px solid ${bc}`, color: tc, fontSize: 16, fontWeight: 700,
+                cursor: show ? "default" : "pointer", boxShadow: show ? "none" : shadow.sm,
+                transition: "all 0.2s",
+              }}>{opt}</button>
+            );
+          })}
+        </div>
+
+        {/* Why button + explanation */}
+        {verbAnswer && !verbShowWhy && (
+          <button onClick={() => setVerbShowWhy(true)} style={{ width: "100%", marginTop: 16, padding: "12px", borderRadius: 12, background: C.primaryGlow, border: "none", color: C.primary, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>💡 Почему?</button>
+        )}
+        {verbShowWhy && (
+          <div style={{ marginTop: 12, padding: "16px 18px", borderRadius: 16, background: C.surface, boxShadow: shadow.sm }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: C.primary, marginBottom: 8 }}>💡 {verbCurrent.gr} = {verbCurrent.ru}</div>
+            <div style={{ fontSize: 13, color: C.textSecondary, marginBottom: 4 }}>Прошедшее: <strong style={{ color: C.primary }}>{verbCurrent.past}</strong></div>
+            {verbCurrent.antonym && <div style={{ fontSize: 13, color: C.textSecondary }}>Антоним: <strong style={{ color: C.accent }}>{verbCurrent.antonym}</strong></div>}
+          </div>
+        )}
+
+        {/* Next button */}
+        {verbAnswer && (
+          <button onClick={nextVerb} style={{ width: "100%", marginTop: 16, padding: "16px", borderRadius: 14, background: C.primary, border: "none", color: C.white, fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: shadow.md }}>Далее →</button>
+        )}
+      </div>
+    );
+  }
+
+  // ============ VERB RESULTS ============
+  if (screen === "verbResults") {
+    const correct = verbResults.filter(r => r.correct).length;
+    const total = verbResults.length || 1;
+    const pct = Math.round((correct / total) * 100);
+    const errors = verbResults.filter(r => !r.correct);
+    return wrap(
+      <div style={{ padding: "40px 20px", maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ width: 80, height: 80, borderRadius: 24, background: pct >= 70 ? C.successBg : pct >= 40 ? C.warningBg : C.dangerBg, display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+          <span style={{ fontSize: 40 }}>{pct >= 80 ? "🎉" : pct >= 50 ? "💪" : "📚"}</span>
+        </div>
+        <h2 style={{ fontSize: 24, fontWeight: 800, margin: "0 0 6px", color: C.primary }}>
+          {pct >= 80 ? "Μπράβο!" : pct >= 50 ? "Καλά πάει!" : "Συνέχισε!"}
+        </h2>
+        <p style={{ color: C.textMuted, fontSize: 14, margin: "0 0 24px" }}>{correct} из {total} правильно</p>
+        <div style={{ display: "inline-flex", width: 120, height: 120, borderRadius: "50%", background: `conic-gradient(${pct >= 70 ? C.success : pct >= 40 ? C.warning : C.danger} ${pct}%, ${C.border} 0%)`, marginBottom: 24 }}>
+          <div style={{ width: 100, height: 100, borderRadius: "50%", background: C.bg, margin: "auto", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: C.primary }}>{pct}%</div>
+          </div>
+        </div>
+
+        {errors.length > 0 && (
+          <div style={{ textAlign: "left", marginBottom: 20 }}>
+            <h3 style={{ fontSize: 12, fontWeight: 800, color: C.danger, marginBottom: 8, letterSpacing: 1, textTransform: "uppercase" }}>Нужно повторить ({errors.length})</h3>
+            {errors.map((r, i) => (
+              <div key={i} style={{ padding: "10px 14px", borderRadius: 10, marginBottom: 3, background: C.surface, borderLeft: `3px solid ${C.danger}`, display: "flex", justifyContent: "space-between" }}>
+                <span style={{ fontWeight: 700, color: C.primary }}>{r.verb.gr}</span>
+                <span style={{ color: C.textSecondary, fontSize: 13 }}>{r.verb.ru}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={() => navigateTo("verbMenu")} style={{ flex: 1, padding: "15px", borderRadius: 14, background: C.surface, border: "none", color: C.text, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: shadow.sm }}>К пачкам</button>
+          {errors.length > 0 && (
+            <button onClick={retryVerbErrors} style={{ flex: 1, padding: "15px", borderRadius: 14, background: C.danger, border: "none", color: C.white, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: shadow.md }}>Повторить ошибки</button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+    return wrap(<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}><button onClick={goHome} style={{ padding: "16px 32px", borderRadius: 14, background: C.primary, border: "none", color: C.white, fontSize: 16, fontWeight: 700, cursor: "pointer" }}>На главную</button></div>);
 }
 
 
